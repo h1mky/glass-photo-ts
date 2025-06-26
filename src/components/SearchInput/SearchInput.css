@@ -1,0 +1,116 @@
+/* For the container holding the text */
+.text-container {
+  width: 100%; /* Take full width */
+  padding: 50px 20px; /* Add some vertical padding */
+  text-align: center;
+  align-items: center; /* Center the text horizontally */
+}
+.search-input-container {
+  background-color: #000000;
+}
+
+/* For the text itself */
+.hero-text {
+  color: #ffffff; /* White text color */
+  font-family: "Cantarell", sans-serif; /* Use Cantarell if loaded, otherwise a generic sans-serif */
+  font-size: 3em; /* Adjust as needed for size, 3em is a good starting point for a large headline */
+  font-weight: 520; /* Bold text, as it appears in the image */
+  line-height: 1.2; /* Adjust line height for better readability of multi-line text */
+  margin: 0 auto; /* Center the block if it has a max-width */
+  max-width: 800px; /* Optional: Limit max-width for readability on very wide screens */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .hero-text {
+    font-size: 2.2em; /* Smaller font size on tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-text {
+    font-size: 1.5em; /* Even smaller font size on mobile */
+    padding: 0 10px; /* Adjust padding for mobile */
+  }
+}
+
+.search-container {
+  position: relative;
+  width: 40%;
+  padding: 0 16px;
+}
+
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 10px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.search-input {
+  width: 100%;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 16px;
+  padding: 10px;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #aaa;
+}
+
+.search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background-color: #333;
+  border-radius: 50%;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-icon svg {
+  fill: #fff;
+}
+
+.search-icon:hover {
+  background-color: #555;
+}
+
+.search-bar:hover {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.search-bar:focus-within {
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+}
+
+.glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 200%;
+  border-radius: 100px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
+  transition: all 0.5s ease;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: -1;
+}
+
+.search-bar:hover + .glow {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.search-bar:focus-within + .glow {
+  transform: translate(-50%, -50%) scale(1.2);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+}
