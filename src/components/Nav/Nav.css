@@ -1,0 +1,107 @@
+.wrapper-nav {
+  background-color: #18181a;
+  padding: 12px;
+}
+
+.nav-link {
+  color: #8e8e93 !important;
+  padding: 8px 15px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffffff !important;
+}
+.nav {
+  font-weight: 510;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.nav.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.nav-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 4px;
+}
+.nav-right-buttons {
+  display: flex;
+  gap: 15px;
+}
+.auth-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  height: 34px;
+  padding: 0 12px;
+  margin: 8px 0;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 18px;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  appearance: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  color: #f0f0f0f0;
+}
+
+.sign-in-style {
+  background-color: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sign-up-style {
+  background-color: #ffd60a;
+  color: #000000;
+  border: none;
+}
+.auth-btn:hover {
+  opacity: 0.8;
+  transform: translateY(-2px);
+}
+
+.sign-in-style:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.sign-up-style:hover {
+  background-color: #e6c200;
+}
+
+.auth-btn .button-text {
+  white-space: nowrap;
+}
+.auth-btn .button-icon {
+  font-size: 1em;
+  margin-right: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+}
+
+.sign-in-style .button-icon {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.sign-up-style .button-icon {
+  background-color: rgba(0, 0, 0, 0.1);
+}
