@@ -1,0 +1,124 @@
+/* photoList.css */
+.wrapper-photo-list {
+  background-color: #000000;
+  color: #f0f0f0;
+  padding: 32px 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2.2em;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.section-subtitle {
+  font-size: 1em;
+  color: #8e8e93;
+  margin: 0;
+}
+
+.photo-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.photo-card {
+  /* break-inside: avoid; - Это свойство полезно для многоколоночных макетов, но не обязательно для CSS Grid, где элементы обычно не ломаются внутри. */
+  margin-bottom: 24px; /* Это свойство может создать лишние отступы внизу карточек в Grid-макете, если уже есть `gap`. Обычно достаточно только `gap`. Если вы хотите, чтобы нижние отступы были больше, чем `gap`, это можно оставить. */
+  background-color: #333;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.photo-card:hover {
+  transform: translateY(-5px);
+}
+
+.photo-card-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-card .overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%; /* Занимает всю высоту карточки */
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  color: white;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Прижимает контент к низу наложения */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none; /* Гарантирует, что наложение не блокирует события мыши, когда оно невидимо */
+}
+
+.photo-card:hover .overlay {
+  opacity: 1;
+  pointer-events: auto; /* Позволяет взаимодействовать с содержимым наложения при наведении */
+}
+
+.photo-card .overlay .username {
+  font-weight: 600;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.photo-card .overlay .title {
+  font-size: 0.9em;
+  line-height: 1.3;
+  margin: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 1024px) {
+  .photo-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .photo-list {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .wrapper-photo-list .container {
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .photo-list {
+    grid-template-columns: 1fr; /* Одна колонка на очень маленьких экранах */
+  }
+}

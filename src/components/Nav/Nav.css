@@ -112,10 +112,10 @@
   flex-direction: row;
   max-width: 14em;
   width: fit-content;
-  height: fit-content;
   background-color: #2c2c2e;
   border-radius: 0.8em;
   overflow: hidden;
+  height: 34px;
 }
 
 .search_icon {
