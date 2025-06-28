@@ -13,6 +13,15 @@
   pointer-events: auto; /* чтобы клики на оверлей работали */
 }
 
+.comment-header a {
+  color: #8e8e93;
+  text-decoration: none;
+  font-weight: 600;
+}
+.comment-header a:hover {
+  color: #ffffff;
+}
+
 .modal-content {
   background: #1a1a1a;
   border-radius: 12px;

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export interface CommentsItem {
   idComment: number;
   userId: number;
@@ -34,12 +36,14 @@ const CommentItem: React.FC<CommentsItem> = ({
 
   return (
     <div className="comment-item" key={idComment}>
-      <a className="comment-avatar" href={userId.toString()}>
+      <Link className="comment-avatar" to={`/user/${userId.toString()}`}>
         <img src={userImg} alt={userName} />
-      </a>
+      </Link>
       <div className="comment-content">
         <div className="comment-header">
-          <span className="comment-author">{userName}</span>
+          <Link className="comment-author" to={`/user/${userId.toString()}`}>
+            {userName}
+          </Link>
           <span className="comment-time">{formatTimeAgo(created_at)}</span>
         </div>
         <div className="comment-text">{content}</div>
