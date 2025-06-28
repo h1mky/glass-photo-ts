@@ -1,8 +1,9 @@
+import PhotoListItem from "../photoListItem";
 import "./photoList.css";
 
-const dummyPhotos = Array.from({ length: 12 }, (_, i) => ({
+const dummyPhotos = Array.from({ length: 24 }, (_, i) => ({
   id: i + 1,
-  imageUrl: `https://picsum.photos/id/${1000 + i}/400/300`, // Пример изображений
+  imageUrl: `https://picsum.photos/id/${1000 + i}/400/540`,
   username: `Photographer ${i + 1}`,
   title: `Stunning View ${i + 1}`,
 }));
@@ -10,28 +11,16 @@ const dummyPhotos = Array.from({ length: 12 }, (_, i) => ({
 const PhotoList = () => {
   return (
     <section className="wrapper-photo-list">
-      <div className="container">
-        <div className="section-header">
-          <h2 className="section-title">Popular Photos</h2>
-          <p className="section-subtitle">
-            New uploads with the highest Pulse rating
-          </p>
-        </div>
-        <div className="photo-list">
-          {dummyPhotos.map((photo) => (
-            <div key={photo.id} className="photo-card">
-              <img
-                src={photo.imageUrl}
-                alt={photo.title}
-                className="photo-card-image"
-              />
-              <div className="overlay">
-                <p className="username">{photo.username}</p>
-                <p className="title">{photo.title}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="photo-list-title container">
+        <p>
+          <strong>Photo Gallery</strong>
+        </p>
+        <p>Explore our collection of stunning photos</p>
+      </div>
+      <div className=" container photo-list-grid">
+        {dummyPhotos.map((photo) => (
+          <PhotoListItem key={photo.id} photo={photo} />
+        ))}
       </div>
     </section>
   );
