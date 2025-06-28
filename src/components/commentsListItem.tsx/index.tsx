@@ -1,7 +1,7 @@
-interface CommentsItem {
+export interface CommentsItem {
   idComment: number;
   userId: number;
-  postId: number;
+  userImg: string;
   userName: string;
   content: string;
   created_at: Date;
@@ -13,10 +13,14 @@ const CommentItem: React.FC<CommentsItem> = ({
   userName,
   content,
   created_at,
+  userImg,
 }) => {
   const formatTimeAgo = (date: Date) => {
+    const formatedDate = new Date(date);
     const now = new Date();
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    const diffInSeconds = Math.floor(
+      (now.getTime() - formatedDate.getTime()) / 1000
+    );
 
     if (diffInSeconds < 60) return "just now";
     if (diffInSeconds < 3600)
@@ -31,10 +35,7 @@ const CommentItem: React.FC<CommentsItem> = ({
   return (
     <div className="comment-item" key={idComment}>
       <a className="comment-avatar" href={userId.toString()}>
-        <img
-          src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userName}`}
-          alt={userName}
-        />
+        <img src={userImg} alt={userName} />
       </a>
       <div className="comment-content">
         <div className="comment-header">

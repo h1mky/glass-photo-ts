@@ -1,16 +1,18 @@
-interface Photo {
+import { Link } from "react-router-dom";
+
+export interface Photo {
   id: number;
-  imageUrl: string;
+  post_img: string;
   username: string;
   title: string;
 }
 
 const PhotoListItem: React.FC<{ photo: Photo }> = ({ photo }) => {
   return (
-    <a className="photo-list-item" href={String(photo.id)}>
+    <Link className="photo-list-item" to={`/post/${photo.id}`}>
       <div className="photo-item-img-wrapper">
         <img
-          src={photo.imageUrl}
+          src={photo.post_img}
           alt={photo.title}
           className="photo-item-img"
         />
@@ -22,7 +24,7 @@ const PhotoListItem: React.FC<{ photo: Photo }> = ({ photo }) => {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 

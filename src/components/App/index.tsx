@@ -10,12 +10,12 @@ const App = () => {
     <>
       <Routes location={state?.backgroundLocation || location}>
         <Route path="/" element={<MainPage />} />
-        <Route path="/posts/:id" element={<PhotoModal />} />
+        <Route path="/post/:id" element={<PhotoModal />} />
       </Routes>
 
       {state?.backgroundLocation && (
         <Routes>
-          <Route path="/posts/:id" element={<PhotoModal />} />
+          <Route path="/post/:id" element={<PhotoModal />} />
         </Routes>
       )}
     </>

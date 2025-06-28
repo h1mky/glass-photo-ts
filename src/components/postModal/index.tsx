@@ -1,20 +1,44 @@
-import { Calendar, Heart, MessageCircle, Share, X } from "lucide-react";
+import { Calendar, MessageCircle, Share, X } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import CommentsList from "../commentsList";
+import { useEffect, useState } from "react";
+
+import { request } from "../../hook/http.hook";
+
+import "./PostModal.css";
+
+export interface Post {
+  post_id: number;
+  post_author: string;
+  post_author_img: string;
+  post_img: string;
+  title: string;
+  created_at: Date;
+}
 
 const PhotoModal = () => {
-  const navigate = useNavigate();
-  const { id } = useParams(); // post ID из URL
+  const [post, setPost] = useState<Post | null>(null);
 
-  // мок-пост
-  const post = {
-    post_id: Number(id),
-    title: "Mock Post",
-    post_img: "https://via.placeholder.com/600x400",
-    created_at: new Date().toISOString(),
-    post_author: "demo_user",
-    post_author_id: 12,
-  };
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        if (id) {
+          const response = await request(
+            `http://localhost:3000/post/${id}`,
+            "GET"
+          );
+          setPost(response);
+        }
+      } catch (error) {
+        console.error("Error fetching post:", error);
+      }
+    };
+
+    fetchPost();
+  }, []);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -27,7 +51,7 @@ const PhotoModal = () => {
   };
 
   const handleClose = () => {
-    navigate(-1); // вернуться назад (на background route)
+    navigate(-1);
   };
 
   return (
@@ -41,8 +65,8 @@ const PhotoModal = () => {
           <div className="modal-left">
             <div className="photo-container">
               <img
-                src={post.post_img}
-                alt={post.title}
+                src={post?.post_img}
+                alt={post?.title}
                 className="main-photo"
               />
             </div>
@@ -53,34 +77,38 @@ const PhotoModal = () => {
               <div className="photo-header">
                 <div className="author-info">
                   <img
-                    src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${post.post_author}`}
-                    alt={post.post_author}
+                    src={post?.post_author_img}
+                    alt={post?.post_author}
                     className="author-avatar"
                   />
                   <div className="author-details">
-                    <span className="author-name">{post.post_author}</span>
+                    <span className="author-name">{post?.post_author}</span>
                   </div>
                 </div>
               </div>
 
               <div className="photo-info">
-                <h2 className="photo-title">{post.title}</h2>
+                <h2 className="photo-title">{post?.title}</h2>
                 <div className="photo-metadata">
                   <div className="metadata-item">
                     <Calendar size={16} />
-                    <span>{formatDate(post.created_at)}</span>
+                    <span>
+                      {post?.created_at
+                        ? formatDate(
+                            typeof post.created_at === "string"
+                              ? post.created_at
+                              : post.created_at.toISOString()
+                          )
+                        : ""}
+                    </span>
                   </div>
                   <div className="metadata-item">
-                    <span>Post ID: {post.post_id}</span>
+                    <span>Post ID: {post?.post_id}</span>
                   </div>
                 </div>
               </div>
 
               <div className="photo-actions">
-                <button className="action-btn">
-                  <Heart size={20} />
-                  <span>Like</span>
-                </button>
                 <button className="action-btn">
                   <MessageCircle size={20} />
                   <span>Comment</span>

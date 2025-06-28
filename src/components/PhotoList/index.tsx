@@ -1,14 +1,26 @@
 import PhotoListItem from "../photoListItem";
 import "./photoList.css";
-
-const dummyPhotos = Array.from({ length: 24 }, (_, i) => ({
-  id: i + 1,
-  imageUrl: `https://picsum.photos/id/${1000 + i}/400/540`,
-  username: `Photographer ${i + 1}`,
-  title: `Stunning View ${i + 1}`,
-}));
+import { useState, useEffect } from "react";
+import { request } from "../../hook/http.hook";
+import type { Photo } from "../photoListItem";
 
 const PhotoList = () => {
+  const [photos, setPhotos] = useState<Photo[]>([]);
+
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      try {
+        const response = await request("http://localhost:3000/post", "GET");
+        console.log("response from API:", response);
+        setPhotos(response);
+      } catch (error) {
+        console.error("Error fetching photos:", error);
+      }
+    };
+
+    fetchPhotos();
+  }, []);
+
   return (
     <section className="wrapper-photo-list">
       <div className="photo-list-title container">
@@ -20,7 +32,7 @@ const PhotoList = () => {
         </p>
       </div>
       <div className=" container photo-list-grid">
-        {dummyPhotos.map((photo) => (
+        {photos.map((photo) => (
           <PhotoListItem key={photo.id} photo={photo} />
         ))}
       </div>
