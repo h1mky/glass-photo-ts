@@ -30,7 +30,7 @@ const PhotoModal = () => {
             `http://localhost:3000/post/${id}`,
             "GET"
           );
-          setPost(response);
+          setPost(response.data);
         }
       } catch (error) {
         console.error("Error fetching post:", error);
@@ -101,9 +101,6 @@ const PhotoModal = () => {
                           )
                         : ""}
                     </span>
-                  </div>
-                  <div className="metadata-item">
-                    <span>Post ID: {post?.post_id}</span>
                   </div>
                 </div>
               </div>

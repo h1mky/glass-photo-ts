@@ -1,30 +1,24 @@
 import CommentItem from "../commentsListItem.tsx";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { request } from "../../hook/http.hook.ts";
 import type { CommentsItem } from "../commentsListItem.tsx";
+import { fetchComments } from "../../services/commentsService/service.ts";
 
 const CommentsList = () => {
   const [comments, setComments] = useState<CommentsItem[] | null>(null);
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        if (id) {
-          const response = await request(
-            `http://localhost:3000/comments/${id}`,
-            "GET"
-          );
-          console.log("response from API:", response);
-          setComments(response);
-        }
-      } catch (error) {
-        console.error("Error fetching post:", error);
+    const fetchAndSetComments = async () => {
+      if (!id) {
+        setComments(null);
+        return;
       }
+      const commentsData = await fetchComments(id.toString());
+      setComments(commentsData);
     };
 
-    fetchPost();
+    fetchAndSetComments();
   }, [id]);
 
   return (

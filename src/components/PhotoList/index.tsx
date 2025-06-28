@@ -1,24 +1,22 @@
 import PhotoListItem from "../photoListItem";
 import "./photoList.css";
 import { useState, useEffect } from "react";
-import { request } from "../../hook/http.hook";
+import { fetchAllPosts } from "../../services/PostService/service";
 import type { Photo } from "../photoListItem";
 
 const PhotoList = () => {
   const [photos, setPhotos] = useState<Photo[]>([]);
 
   useEffect(() => {
-    const fetchPhotos = async () => {
+    const fetchAndSetPosts = async () => {
       try {
-        const response = await request("http://localhost:3000/post", "GET");
-        console.log("response from API:", response);
-        setPhotos(response);
+        const posts = await fetchAllPosts();
+        setPhotos(posts);
       } catch (error) {
-        console.error("Error fetching photos:", error);
+        console.error("Error fetching posts:", error);
       }
     };
-
-    fetchPhotos();
+    fetchAndSetPosts();
   }, []);
 
   return (
