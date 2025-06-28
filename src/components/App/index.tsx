@@ -1,9 +1,25 @@
+import { Routes, Route, useLocation } from "react-router-dom";
 import MainPage from "../../pages/MainPage";
+import PhotoModal from "../postModal";
+
 const App = () => {
+  const location = useLocation();
+  const state = location.state as { backgroundLocation?: Location };
+
   return (
     <>
-      <MainPage />
+      <Routes location={state?.backgroundLocation || location}>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/posts/:id" element={<PhotoModal />} />
+      </Routes>
+
+      {state?.backgroundLocation && (
+        <Routes>
+          <Route path="/posts/:id" element={<PhotoModal />} />
+        </Routes>
+      )}
     </>
   );
 };
+
 export default App;
