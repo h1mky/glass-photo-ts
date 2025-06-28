@@ -15,7 +15,9 @@ const PhotoList = () => {
         <p>
           <strong>Photo Gallery</strong>
         </p>
-        <p>Explore our collection of stunning photos</p>
+        <p className="photo-list_p">
+          Explore our collection of stunning photos
+        </p>
       </div>
       <div className=" container photo-list-grid">
         {dummyPhotos.map((photo) => (

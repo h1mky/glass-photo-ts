@@ -2,6 +2,7 @@
   background-color: #000000;
   color: #f0f0f0;
   padding: 32px 0;
+  margin-top: calc(56px + 16px); /* 56px for header height, 16px for margin */
 }
 
 .section-header {
@@ -11,6 +12,12 @@
 strong {
   font-size: x-large;
   font-weight: 600;
+}
+.photo-list_p {
+  font-size: 13px;
+  margin-top: 8px;
+  margin-bottom: 24px !important;
+  text-align: center;
 }
 
 .section-title {

@@ -1,6 +1,12 @@
 .wrapper-nav {
   background-color: #18181a;
   padding: 12px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav-link {
