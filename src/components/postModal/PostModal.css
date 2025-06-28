@@ -4,13 +4,21 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7); /* чуть более прозрачный фон */
+  background: rgba(0, 0, 0, 0.4);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
   padding: 2rem;
-  pointer-events: auto; /* чтобы клики на оверлей работали */
+  pointer-events: auto;
+}
+
+body.modal-open {
+  overflow: hidden;
 }
 
 .comment-header a {
@@ -24,7 +32,7 @@
 
 .modal-content {
   background: #1a1a1a;
-  border-radius: 12px;
+  border-radius: 12px !important;
   max-width: 1200px;
   max-height: 90vh;
   width: 100%;

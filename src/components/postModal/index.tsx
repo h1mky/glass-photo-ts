@@ -23,6 +23,14 @@ const PhotoModal = () => {
   const { id } = useParams();
 
   useEffect(() => {
+    document.body.classList.add("modal-open");
+
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchPost = async () => {
       try {
         if (id) {
@@ -38,6 +46,7 @@ const PhotoModal = () => {
     };
 
     fetchPost();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const formatDate = (dateString: string) => {

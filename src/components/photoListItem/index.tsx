@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export interface Photo {
   id: number;
@@ -8,8 +8,15 @@ export interface Photo {
 }
 
 const PhotoListItem: React.FC<{ photo: Photo }> = ({ photo }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handlePhotoClick = () => {
+    navigate(`/post/${photo.id}`, { state: { backgroundLocation: location } });
+  };
+
   return (
-    <Link className="photo-list-item" to={`/post/${photo.id}`}>
+    <div className="photo-list-item" onClick={handlePhotoClick}>
       <div className="photo-item-img-wrapper">
         <img
           src={photo.post_img}
@@ -24,7 +31,7 @@ const PhotoListItem: React.FC<{ photo: Photo }> = ({ photo }) => {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
