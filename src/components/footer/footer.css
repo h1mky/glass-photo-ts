@@ -1,0 +1,28 @@
+.wrapper-footer {
+  background: #1c1c1e;
+  margin-bottom: 0px !important;
+  padding: 96px 0;
+}
+
+.wrapper-footer p {
+  color: #636366;
+  font-size: 13px;
+}
+
+.about-footer_item a {
+  color: #8e8e93;
+  text-decoration: none;
+}
+.about-footer_item {
+  font-size: 13px;
+}
+.d-flex {
+  justify-content: space-between;
+}
+
+.about-footer_item a:hover {
+  color: #fffffff0;
+}
+.about-footer_item p {
+  color: #fffffff0;
+}

@@ -1,3 +1,4 @@
+import Footer from "../components/footer";
 import Nav from "../components/Nav";
 import PhotoList from "../components/PhotoList";
 
@@ -6,6 +7,7 @@ const MainPage = () => {
     <>
       <Nav />
       <PhotoList />
+      <Footer />
     </>
   );
 };

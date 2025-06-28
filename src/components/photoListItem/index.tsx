@@ -7,7 +7,7 @@ interface Photo {
 
 const PhotoListItem: React.FC<{ photo: Photo }> = ({ photo }) => {
   return (
-    <div className="photo-list-item">
+    <a className="photo-list-item" href={String(photo.id)}>
       <div className="photo-item-img-wrapper">
         <img
           src={photo.imageUrl}
@@ -22,7 +22,7 @@ const PhotoListItem: React.FC<{ photo: Photo }> = ({ photo }) => {
           </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 };
 
