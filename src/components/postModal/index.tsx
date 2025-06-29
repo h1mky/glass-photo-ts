@@ -1,11 +1,17 @@
 import { Calendar, MessageCircle, Share, X } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import CommentsList from "../commentsList";
-import { useEffect, useState } from "react";
-
-import { request } from "../../hook/http.hook";
+import { useEffect } from "react";
 
 import "./PostModal.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectPostById,
+  selectPostByIdLoading,
+} from "../../redux/postsSlice/selector";
+import { fetchPostThunk } from "../../redux/postsSlice/slice";
+import type { AppDispatch } from "../../redux/store";
+import { ClipLoader } from "react-spinners";
 
 export interface Post {
   post_id: number;
@@ -17,7 +23,10 @@ export interface Post {
 }
 
 const PhotoModal = () => {
-  const [post, setPost] = useState<Post | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const postByID = useSelector(selectPostById);
+  const loading = useSelector(selectPostByIdLoading);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -31,21 +40,7 @@ const PhotoModal = () => {
   }, []);
 
   useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        if (id) {
-          const response = await request(
-            `http://localhost:3000/post/${id}`,
-            "GET"
-          );
-          setPost(response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching post:", error);
-      }
-    };
-
-    fetchPost();
+    dispatch(fetchPostThunk(Number(id)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -73,11 +68,15 @@ const PhotoModal = () => {
         <div className="modal-body">
           <div className="modal-left">
             <div className="photo-container">
-              <img
-                src={post?.post_img}
-                alt={post?.title}
-                className="main-photo"
-              />
+              {loading ? (
+                <ClipLoader size={40} color="#f0f0f0f0" />
+              ) : (
+                <img
+                  src={postByID?.post_img}
+                  alt={postByID?.title}
+                  className="main-photo"
+                />
+              )}
             </div>
           </div>
 
@@ -86,27 +85,27 @@ const PhotoModal = () => {
               <div className="photo-header">
                 <div className="author-info">
                   <img
-                    src={post?.post_author_img}
-                    alt={post?.post_author}
+                    src={postByID?.post_author_img}
+                    alt={postByID?.post_author}
                     className="author-avatar"
                   />
                   <div className="author-details">
-                    <span className="author-name">{post?.post_author}</span>
+                    <span className="author-name">{postByID?.post_author}</span>
                   </div>
                 </div>
               </div>
 
               <div className="photo-info">
-                <h2 className="photo-title">{post?.title}</h2>
+                <h2 className="photo-title">{postByID?.title}</h2>
                 <div className="photo-metadata">
                   <div className="metadata-item">
                     <Calendar size={16} />
                     <span>
-                      {post?.created_at
+                      {postByID?.created_at
                         ? formatDate(
-                            typeof post.created_at === "string"
-                              ? post.created_at
-                              : post.created_at.toISOString()
+                            typeof postByID.created_at === "string"
+                              ? postByID.created_at
+                              : postByID.created_at.toISOString()
                           )
                         : ""}
                     </span>

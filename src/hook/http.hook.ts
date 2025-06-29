@@ -19,7 +19,8 @@ interface ApiResponse<T> {
   status: number;
 }
 
-export const request = async <T = never>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const request = async <T = any>(
   url: string,
   method = "GET",
   body: string | null = null,

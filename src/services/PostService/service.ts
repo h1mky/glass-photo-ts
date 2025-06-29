@@ -9,3 +9,13 @@ export const fetchAllPosts = async () => {
     throw error;
   }
 };
+
+export const fetchPost = async (id: number) => {
+  try {
+    const response = await request(`http://localhost:3000/post/${id}`, "GET");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching post by ID:", error);
+    throw error;
+  }
+};

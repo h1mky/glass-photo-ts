@@ -44,10 +44,10 @@ const Nav = () => {
               placeholder="Search For Posts"
             />
           </div>
-          <a href="#" className="auth-btn sign-in-style">
+          <Link to={"/sign-in"} className="auth-btn sign-in-style">
             <i className="fas fa-arrow-right button-icon"></i>
             <span className="button-text">Sign In</span>
-          </a>
+          </Link>
           <Link to={"/sign-up"} className="auth-btn sign-up-style">
             <i className="fas fa-arrow-up button-icon"></i>
             <span className="button-text">Sign Up</span>
