@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import MainPage from "../../pages/MainPage";
 import PhotoModal from "../postModal";
+import SignUpForm from "../sign-up-form";
 
 const App = () => {
   const location = useLocation();
@@ -11,6 +12,7 @@ const App = () => {
       <Routes location={state?.backgroundLocation || location}>
         <Route path="/" element={<MainPage />} />
         <Route path="/post/:id" element={<PhotoModal />} />
+        <Route path="/sign-up" element={<SignUpForm />} />
       </Routes>
 
       {state?.backgroundLocation && (

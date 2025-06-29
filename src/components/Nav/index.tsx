@@ -1,4 +1,5 @@
 import "./Nav.css";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
   return (
@@ -47,10 +48,10 @@ const Nav = () => {
             <i className="fas fa-arrow-right button-icon"></i>
             <span className="button-text">Sign In</span>
           </a>
-          <a href="#" className="auth-btn sign-up-style">
+          <Link to={"/sign-up"} className="auth-btn sign-up-style">
             <i className="fas fa-arrow-up button-icon"></i>
             <span className="button-text">Sign Up</span>
-          </a>
+          </Link>
         </div>
       </div>
     </div>
