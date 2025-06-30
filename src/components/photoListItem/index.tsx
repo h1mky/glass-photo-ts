@@ -1,11 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-
-export interface Photo {
-  id: number;
-  post_img: string;
-  username: string;
-  title: string;
-}
+import type { Photo } from "../../redux/postsSlice/types";
 
 const PhotoListItem: React.FC<{ photo: Photo }> = ({ photo }) => {
   const navigate = useNavigate();

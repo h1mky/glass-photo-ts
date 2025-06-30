@@ -69,7 +69,16 @@ const PhotoModal = () => {
           <div className="modal-left">
             <div className="photo-container">
               {loading ? (
-                <ClipLoader size={40} color="#f0f0f0f0" />
+                <div
+                  style={{
+                    height: "100vh",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <ClipLoader color="#f0f0f0f0" size={40} />
+                </div>
               ) : (
                 <img
                   src={postByID?.post_img}

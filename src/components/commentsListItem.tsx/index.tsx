@@ -1,13 +1,5 @@
 import { Link } from "react-router-dom";
-
-export interface CommentsItem {
-  idComment: number;
-  userId: number;
-  userImg: string;
-  userName: string;
-  content: string;
-  created_at: Date;
-}
+import type { CommentsItem } from "../../redux/commentsSlice/types";
 
 const CommentItem: React.FC<CommentsItem> = ({
   idComment,

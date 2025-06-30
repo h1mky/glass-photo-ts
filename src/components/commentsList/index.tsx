@@ -1,24 +1,33 @@
 import CommentItem from "../commentsListItem.tsx";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import type { CommentsItem } from "../commentsListItem.tsx";
-import { fetchComments } from "../../services/commentsService/service.ts";
+
+import { fetchCommentsThunk } from "../../redux/commentsSlice/slice.ts";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectComments,
+  // selectCommentsError,
+  selectCommentsLoading,
+} from "../../redux/commentsSlice/selector.ts";
+
+import type { AppDispatch } from "../../redux/store.ts";
+
+import { ClipLoader } from "react-spinners";
 
 const CommentsList = () => {
-  const [comments, setComments] = useState<CommentsItem[] | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const comments = useSelector(selectComments);
+  const loading = useSelector(selectCommentsLoading);
+  // const error = useSelector(selectCommentsError);
+
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    const fetchAndSetComments = async () => {
-      if (!id) {
-        setComments(null);
-        return;
-      }
-      const commentsData = await fetchComments(id.toString());
-      setComments(commentsData);
-    };
+    if (id) {
+      dispatch(fetchCommentsThunk(id));
+    }
 
-    fetchAndSetComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return (
@@ -28,23 +37,29 @@ const CommentsList = () => {
       </div>
 
       <div className="comments-list">
-        {comments?.map((comment) => (
-          <CommentItem
-            key={comment.idComment}
-            userId={comment.userId}
-            idComment={comment.idComment}
-            userImg={comment.userImg}
-            userName={comment.userName}
-            content={comment.content}
-            created_at={comment.created_at}
-          />
-        ))}
+        {loading ? (
+          <div className="loader-container">
+            <ClipLoader color="#f0f0f0f0" />
+          </div>
+        ) : (
+          comments?.map((comment) => (
+            <CommentItem
+              key={comment.idComment}
+              userId={comment.userId}
+              idComment={comment.idComment}
+              userImg={comment.userImg}
+              userName={comment.userName}
+              content={comment.content}
+              created_at={comment.created_at}
+            />
+          ))
+        )}
       </div>
 
       <div className="comment-form">
         <div className="comment-input-wrapper">
           <img
-            src="https://api.dicebear.com/7.x/avataaars/svg?seed=current-user"
+            src="https://theafictionado.wordpress.com/wp-content/uploads/2017/01/luckystar.png"
             alt="Your avatar"
             className="comment-form-avatar"
           />

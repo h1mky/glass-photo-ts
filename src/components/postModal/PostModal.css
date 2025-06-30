@@ -311,3 +311,10 @@ body.modal-open {
     max-height: 50vh;
   }
 }
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  width: 100%;
+}
