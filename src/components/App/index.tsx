@@ -5,6 +5,7 @@ const MainPage = lazy(() => import("../../pages/MainPage"));
 const PhotoModal = lazy(() => import("../postModal"));
 const SignUpForm = lazy(() => import("../../pages/signUpForm"));
 const SignInForm = lazy(() => import("../../pages/SignInForm"));
+const UserPage = lazy(() => import("../../pages/UserPage"));
 
 import { ClipLoader } from "react-spinners";
 
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/post/:id" element={<PhotoModal />} />
         <Route path="/sign-up" element={<SignUpForm />} />
         <Route path="/sign-in" element={<SignInForm />} />
+        <Route path="/user/:id" element={<UserPage />} />
       </Routes>
 
       {state?.backgroundLocation && (
