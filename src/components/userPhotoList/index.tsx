@@ -26,7 +26,7 @@ const PhotosListUser = () => {
       comments: 8,
     },
     {
-      post_id: 3,
+      post_id: 19,
       title: "Mountain Landscape",
       post_img:
         "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop",

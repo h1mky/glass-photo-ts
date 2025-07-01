@@ -7,17 +7,17 @@
 
 /* Profile Card Container - Fixed Left Side */
 .profile-card {
-  width: 380px;
+  width: 380px; /* Изначальная ширина для десктопа */
   background-color: #000;
   color: #fff;
   overflow: hidden;
   border-radius: 0;
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: 100vh; /* Занимает всю высоту видимой области */
   flex-shrink: 0;
-  margin-top: 80px;
-  margin-left: 10px;
+  margin-top: 80px; /* Отступ сверху */
+  margin-left: 10px; /* Отступ слева */
 }
 
 /* Hero Image */
@@ -67,9 +67,9 @@
 
 /* Scrollable Content Area - Right Side */
 .user-content-scrollable {
-  flex: 1;
-  overflow-y: auto;
-  height: 100vh;
+  flex: 1; /* Занимает все доступное пространство */
+  overflow-y: auto; /* Позволяет прокручивать контент */
+  height: 100vh; /* Важно для прокрутки, когда flex-direction: row */
   background-color: #000;
   padding: 20px;
 }
@@ -105,76 +105,25 @@
   color: #999;
   margin: 0;
 }
-
-.photo-list-user {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.photo-list-item {
-  width: 100%;
-  cursor: pointer;
-}
-
-.photo-item-img-wrapper {
-  width: 100%;
-  height: auto;
-  position: relative;
-}
-
-.photo-item-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
-/* Responsive */
 @media (max-width: 1024px) {
   .user-page-layout {
-    flex-direction: column;
+    flex-direction: column; /* Переключаем на колонку */
   }
 
   .profile-card {
-    width: 100%;
-    height: auto;
-    position: relative;
+    width: 100%; /* Растягиваем на всю ширину */
+    height: auto; /* Высота по контенту */
+    position: relative; /* Сброс sticky */
+    margin: 0 0 20px 0; /* Сброс отступов */
   }
 
   .user-content-scrollable {
-    height: auto;
-    overflow-y: visible;
-  }
-}
-
-@media (max-width: 480px) {
-  .profile-card {
-    width: 100%;
-    max-width: 380px;
+    height: auto; /* Позволить прокрутку всей страницы */
+    overflow: visible;
   }
 
-  .profile-hero {
-    height: 400px;
-  }
-
-  .profile-info {
-    padding: 20px;
-  }
-
-  .profile-name {
-    font-size: 1.8rem;
-  }
-
-  .profile-nav {
-    gap: 16px;
-  }
-
-  .nav-item {
-    font-size: 0.8rem;
-  }
-
-  .user-content-scrollable {
-    padding: 15px;
+  .profile-footer {
+    position: static; /* Снимаем абсолютное позиционирование */
+    margin-top: 20px;
   }
 }

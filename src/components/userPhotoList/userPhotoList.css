@@ -1,10 +1,15 @@
 /* Контейнер для списка фотографий */
 .photo-list-user {
-  display: flex; /* Делаем элементы гибкими для расположения рядом */
-  flex-wrap: wrap; /* Разрешаем элементам переноситься на новую строку, если не хватает места */
+  display: grid; /* Используем grid */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(250px, 1fr)
+  ); /* Адаптивная сетка */
   gap: 16px; /* Промежуток между элементами */
-  padding: 16px; /* Добавим внутренний отступ для всего списка */
-  box-sizing: border-box; /* Учитываем padding в общей ширине элемента */
+  padding: 16px;
+  box-sizing: border-box;
+  height: 100%;
+  margin-top: 88px;
 }
 
 /* Общие стили для элемента фото-карточки */
@@ -16,25 +21,23 @@
   position: relative;
   cursor: pointer;
   transition: transform 0.3s ease;
-  flex-shrink: 0; /* Предотвращает сжимание элементов */
+  flex-shrink: 0;
 }
 
-/* Стили для первого элемента, чтобы он был Уже и выглядел "обрезанным" как на скрине */
+/* Первый элемент — с фиксированной шириной (на десктопе) */
 .photo-list-user > *:first-child {
-  width: 300px; /* Фиксированная ширина для первого элемента */
-  /* height: 450px;  Можно задать фиксированную высоту, если нужно */
+  width: 300px;
 }
 
-/* Стили для второго элемента, чтобы он занимал оставшееся место */
+/* Второй элемент — растягивается (на десктопе) */
 .photo-list-user > *:nth-child(2) {
-  flex-grow: 1; /* Позволяет второму элементу растягиваться, заполняя оставшееся пространство */
-  /* width: calc(100% - 300px - 16px);  Можно явно указать ширину, но flex-grow лучше */
-  min-width: 250px; /* Минимальная ширина, чтобы не сжимался слишком сильно */
+  flex-grow: 1;
+  min-width: 250px;
 }
 
-/* Стили для всех остальных элементов (начиная с третьего), чтобы они переносились на новую строку */
+/* Элементы, начиная с третьего — занимают всю ширину в сетке */
 .photo-list-user > *:nth-child(n + 3) {
-  width: 100%; /* Каждый последующий элемент занимает всю ширину */
+  width: 100%;
 }
 
 .photo-list-item:hover {
@@ -44,14 +47,14 @@
 .photo-item-img-wrapper {
   position: relative;
   width: 100%;
-  height: 100%; /* Пусть обертка занимает всю доступную высоту родителя */
+  height: 100%;
   overflow: hidden;
 }
 
 .photo-item-img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Важно для обрезки изображений */
+  object-fit: cover;
   display: block;
 }
 
@@ -61,27 +64,26 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: auto; /* Высота подстраивается под контент */
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: 15px;
   color: white;
-  opacity: 0; /* По умолчанию скрыто */
-  pointer-events: none; /* Не перехватывает клики */
+  opacity: 0;
+  pointer-events: none;
   transition: opacity 0.3s ease, background 0.3s ease;
   background: transparent;
 }
 
-/* Всегда показывать наложение для первого элемента (как на скрине) */
+/* Всегда показывать наложение для первого элемента */
 .photo-list-user > *:first-child .photo-item-overlay {
   opacity: 1;
   pointer-events: auto;
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 0.7) 0%,
-    /* Более темный градиент для лучшей читаемости текста */ rgba(0, 0, 0, 0)
-      100%
+    rgba(0, 0, 0, 0) 100%
   );
 }
 
@@ -109,17 +111,22 @@
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-/* Медиа-запросы для адаптивности, если нужно */
+/* Медиа-запрос для мобильных устройств */
 @media (max-width: 768px) {
   .photo-list-user {
-    flex-direction: column; /* На маленьких экранах выстраиваем в столбец */
-    align-items: center; /* Центрируем элементы */
+    grid-template-columns: 1fr; /* Один столбец */
+    justify-items: center;
   }
 
   .photo-list-user > *:first-child,
   .photo-list-user > *:nth-child(2),
   .photo-list-user > *:nth-child(n + 3) {
-    width: 90%; /* Каждый элемент занимает почти всю ширину */
-    margin-right: 0;
+    width: 90%;
+  }
+
+  .photo-list-user > *:first-child,
+  .photo-list-user > *:nth-child(2) {
+    flex-grow: 0;
+    min-width: auto;
   }
 }

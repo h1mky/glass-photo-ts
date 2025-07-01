@@ -19,21 +19,38 @@ body {
 
 .user-page-layout {
   display: flex;
-  flex-direction: row;
-  height: 100vh; /* важен для scroll */
-  overflow: hidden;
+  background-color: #000;
+  min-height: 100vh;
 }
 .user-content-scrollable {
-  margin-left: 380px;
   padding: 100px 20px 20px;
   width: calc(100% - 380px);
-  height: 100vh;
-  overflow-y: auto;
 }
 
 /* Адаптив */
-@media (max-width: 768px) {
-  .user-layout {
-    grid-template-columns: 1fr;
+@media (max-width: 1024px) {
+  .user-page-layout {
+    flex-direction: column;
+    height: auto; /* убираем фиксированную высоту */
+    overflow: visible; /* позволяем прокрутку */
+  }
+
+  .profile-card {
+    width: 100%;
+    height: auto;
+    position: relative;
+    margin: 0 0 20px 0;
+  }
+
+  .user-content-scrollable {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    padding: 20px; /* можно подогнать под нужный отступ */
+  }
+
+  .profile-footer {
+    position: static;
+    margin-top: 20px;
   }
 }
