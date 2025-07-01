@@ -16,3 +16,24 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif !important;
   background: #000000 !important;
 }
+
+.user-page-layout {
+  display: flex;
+  flex-direction: row;
+  height: 100vh; /* важен для scroll */
+  overflow: hidden;
+}
+.user-content-scrollable {
+  margin-left: 380px;
+  padding: 100px 20px 20px;
+  width: calc(100% - 380px);
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .user-layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,125 @@
+/* Контейнер для списка фотографий */
+.photo-list-user {
+  display: flex; /* Делаем элементы гибкими для расположения рядом */
+  flex-wrap: wrap; /* Разрешаем элементам переноситься на новую строку, если не хватает места */
+  gap: 16px; /* Промежуток между элементами */
+  padding: 16px; /* Добавим внутренний отступ для всего списка */
+  box-sizing: border-box; /* Учитываем padding в общей ширине элемента */
+}
+
+/* Общие стили для элемента фото-карточки */
+.photo-list-item {
+  background-color: #333;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  flex-shrink: 0; /* Предотвращает сжимание элементов */
+}
+
+/* Стили для первого элемента, чтобы он был Уже и выглядел "обрезанным" как на скрине */
+.photo-list-user > *:first-child {
+  width: 300px; /* Фиксированная ширина для первого элемента */
+  /* height: 450px;  Можно задать фиксированную высоту, если нужно */
+}
+
+/* Стили для второго элемента, чтобы он занимал оставшееся место */
+.photo-list-user > *:nth-child(2) {
+  flex-grow: 1; /* Позволяет второму элементу растягиваться, заполняя оставшееся пространство */
+  /* width: calc(100% - 300px - 16px);  Можно явно указать ширину, но flex-grow лучше */
+  min-width: 250px; /* Минимальная ширина, чтобы не сжимался слишком сильно */
+}
+
+/* Стили для всех остальных элементов (начиная с третьего), чтобы они переносились на новую строку */
+.photo-list-user > *:nth-child(n + 3) {
+  width: 100%; /* Каждый последующий элемент занимает всю ширину */
+}
+
+.photo-list-item:hover {
+  transform: translateY(-5px);
+}
+
+.photo-item-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%; /* Пусть обертка занимает всю доступную высоту родителя */
+  overflow: hidden;
+}
+
+.photo-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Важно для обрезки изображений */
+  display: block;
+}
+
+/* Наложение с информацией о фото */
+.photo-item-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: auto; /* Высота подстраивается под контент */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 15px;
+  color: white;
+  opacity: 0; /* По умолчанию скрыто */
+  pointer-events: none; /* Не перехватывает клики */
+  transition: opacity 0.3s ease, background 0.3s ease;
+  background: transparent;
+}
+
+/* Всегда показывать наложение для первого элемента (как на скрине) */
+.photo-list-user > *:first-child .photo-item-overlay {
+  opacity: 1;
+  pointer-events: auto;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    /* Более темный градиент для лучшей читаемости текста */ rgba(0, 0, 0, 0)
+      100%
+  );
+}
+
+.photo-list-item:hover .photo-item-overlay {
+  opacity: 1;
+  pointer-events: auto;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.52) 0%,
+    rgba(237, 221, 83, 0) 43%
+  );
+}
+
+.photo-username {
+  font-weight: 600;
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.photo-description {
+  font-size: 0.9em;
+  line-height: 1.3;
+  margin: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+/* Медиа-запросы для адаптивности, если нужно */
+@media (max-width: 768px) {
+  .photo-list-user {
+    flex-direction: column; /* На маленьких экранах выстраиваем в столбец */
+    align-items: center; /* Центрируем элементы */
+  }
+
+  .photo-list-user > *:first-child,
+  .photo-list-user > *:nth-child(2),
+  .photo-list-user > *:nth-child(n + 3) {
+    width: 90%; /* Каждый элемент занимает почти всю ширину */
+    margin-right: 0;
+  }
+}

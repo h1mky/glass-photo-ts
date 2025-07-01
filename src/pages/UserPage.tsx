@@ -1,13 +1,17 @@
 import Nav from "../components/Nav";
 import ProfileCard from "../components/profileCard";
-// import PhotosListUser from "../components/userPhotoList";
+import PhotosListUser from "../components/userPhotoList";
 
 const UserPage = () => {
   return (
     <>
       <Nav />
-      <ProfileCard />
-      {/* <PhotosListUser /> */}
+      <div className="user-page-layout">
+        <ProfileCard />
+        <div className="user-content-scrollable">
+          <PhotosListUser />
+        </div>
+      </div>
     </>
   );
 };

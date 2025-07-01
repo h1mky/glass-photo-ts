@@ -1,21 +1,23 @@
-/* App Container */
-.app {
+/* User Page Layout */
+.user-page-layout {
   display: flex;
-  justify-content: center;
-  align-items: center;
   min-height: 100vh;
   background-color: #000;
-  padding: 20px;
 }
 
-/* Profile Card */
+/* Profile Card Container - Fixed Left Side */
 .profile-card {
   width: 380px;
   background-color: #000;
   color: #fff;
   overflow: hidden;
   border-radius: 0;
-  position: relative;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  flex-shrink: 0;
+  margin-top: 80px;
+  margin-left: 10px;
 }
 
 /* Hero Image */
@@ -63,36 +65,13 @@
   line-height: 1.4;
 }
 
-/* Navigation */
-.profile-nav {
-  display: flex;
-  gap: 24px;
-}
-
-.nav-item {
-  font-size: 0.9rem;
-  color: #999;
-  cursor: pointer;
-  transition: color 0.2s;
-  position: relative;
-}
-
-.nav-item:hover {
-  color: #fff;
-}
-
-.nav-item.active {
-  color: #fff;
-}
-
-.nav-item.active::after {
-  content: "";
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: #fff;
+/* Scrollable Content Area - Right Side */
+.user-content-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  height: 100vh;
+  background-color: #000;
+  padding: 20px;
 }
 
 /* Footer */
@@ -127,23 +106,48 @@
   margin: 0;
 }
 
-.signup-btn {
-  background-color: #ffd700;
-  color: #000;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
+.photo-list-user {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
-.signup-btn:hover {
-  background-color: #ffed4a;
+.photo-list-item {
+  width: 100%;
+  cursor: pointer;
+}
+
+.photo-item-img-wrapper {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.photo-item-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .user-page-layout {
+    flex-direction: column;
+  }
+
+  .profile-card {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .user-content-scrollable {
+    height: auto;
+    overflow-y: visible;
+  }
+}
+
 @media (max-width: 480px) {
   .profile-card {
     width: 100%;
@@ -168,5 +172,9 @@
 
   .nav-item {
     font-size: 0.8rem;
+  }
+
+  .user-content-scrollable {
+    padding: 15px;
   }
 }

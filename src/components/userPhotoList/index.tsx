@@ -1,4 +1,5 @@
 import PhotoListItem from "../photoListItem";
+import "./userPhotoList.css";
 
 const PhotosListUser = () => {
   const photos = [
@@ -71,7 +72,7 @@ const PhotosListUser = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="photo-list-user">
       {photos.map((photo) => (
         <PhotoListItem
           key={photo.post_id}
