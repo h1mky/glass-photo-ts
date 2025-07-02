@@ -1,3 +1,5 @@
+import type { DescriptionOrImage } from "../../components/models";
+
 export interface Photo {
   id: number;
   post_img: string;
@@ -7,6 +9,7 @@ export interface Photo {
 
 export interface PostByID {
   post_id: number;
+  description: DescriptionOrImage;
   post_author: string;
   post_author_img: string;
   post_img: string;

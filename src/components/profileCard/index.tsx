@@ -3,16 +3,13 @@ import { fetchUserProfile } from "../../services/UserService/service";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-interface UserDesOrImg {
-  String: string;
-  Valid: boolean;
-}
+import type { DescriptionOrImage } from "../models";
 
 interface User {
   id: number;
   username: string;
-  user_img: UserDesOrImg;
-  description: UserDesOrImg;
+  user_img: DescriptionOrImage;
+  description: DescriptionOrImage;
 }
 
 const ProfileCard = () => {

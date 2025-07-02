@@ -13,15 +13,6 @@ import { fetchPostThunk } from "../../redux/postsSlice/slice";
 import type { AppDispatch } from "../../redux/store";
 import { ClipLoader } from "react-spinners";
 
-export interface Post {
-  post_id: number;
-  post_author: string;
-  post_author_img: string;
-  post_img: string;
-  title: string;
-  created_at: Date;
-}
-
 const PhotoModal = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -106,6 +97,9 @@ const PhotoModal = () => {
 
               <div className="photo-info">
                 <h2 className="photo-title">{postByID?.title}</h2>
+                <div className="photo-description">
+                  <p>{postByID?.description.String}</p>
+                </div>
                 <div className="photo-metadata">
                   <div className="metadata-item">
                     <Calendar size={16} />

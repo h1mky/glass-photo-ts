@@ -318,3 +318,7 @@ body.modal-open {
   min-height: 100px;
   width: 100%;
 }
+.photo-description {
+  color: white;
+  margin-bottom: 20px;
+}
