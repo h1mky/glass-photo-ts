@@ -1,21 +1,13 @@
 import { request } from "../../hook/http.hook";
 
-export const fetchAllPosts = async () => {
-  try {
-    const response = await request("http://localhost:3000/post", "GET");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-    throw error;
-  }
+export const fetchAllPosts = () => {
+  return request("http://localhost:3000/post", "GET");
 };
 
-export const fetchPost = async (id: number) => {
-  try {
-    const response = await request(`http://localhost:3000/post/${id}`, "GET");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching post by ID:", error);
-    throw error;
-  }
+export const fetchPost = (id: number) => {
+  return request(`http://localhost:3000/post/${id}`, "GET");
+};
+
+export const fetchPostsUser = (id: number) => {
+  return request(`http://localhost:3000/userPost/${id}`, "GET");
 };
