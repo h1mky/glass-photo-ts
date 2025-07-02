@@ -31,14 +31,7 @@ const PhotosListUser = () => {
   return (
     <div className="photo-list-user">
       {photos?.map((photo) => (
-        <PhotoListItem
-          key={photo.id}
-          photo={{
-            ...photo,
-            id: photo.id,
-            username: photo.username,
-          }}
-        />
+        <PhotoListItem key={photo.id} photo={photo} />
       ))}
     </div>
   );
