@@ -62,9 +62,21 @@ const postsSlice = createSlice({
           state.postById = action.payload;
         }
       )
-      .addCase(fetchPostThunk.rejected, (state, action) => {
+
+      .addCase(fetchUserPostsThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchUserPostsThunk.fulfilled,
+        (state, action: PayloadAction<PostsState["userPosts"]>) => {
+          state.loading = false;
+          state.userPosts = action.payload;
+        }
+      )
+      .addCase(fetchUserPostsThunk.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message || "Failed to fetch post by ID";
+        state.error = action.error.message || "Failed to fetch user posts";
       });
   },
 });
