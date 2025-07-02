@@ -16,7 +16,8 @@ export interface PostByID {
 
 export interface PostsState {
   photos: Photo[] | null;
-  loading: boolean;
-  error: string | null;
   postById: PostByID | null;
+  userPosts: Photo[] | null;
+  error: string | null;
+  loading: boolean;
 }

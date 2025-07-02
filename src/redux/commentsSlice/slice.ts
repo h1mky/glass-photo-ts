@@ -6,9 +6,7 @@ import type { CommentsState, CommentsItem } from "./types";
 
 export const fetchCommentsThunk = createAsyncThunk<CommentsItem[], string>(
   "comments/fetchComments",
-  async (id: string) => {
-    return await fetchComments(id);
-  }
+  async (id: string) => (await fetchComments(id)).data
 );
 
 const initialState: CommentsState = {
