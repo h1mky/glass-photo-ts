@@ -1,14 +1,7 @@
 * {
   margin: 0;
-  box-sizing: border-box;
   padding: 0;
-}
-
-li {
-  list-style: none;
-}
-p {
-  margin: 0 !important;
+  box-sizing: border-box;
 }
 
 body {
@@ -18,41 +11,10 @@ body {
   scroll-behavior: smooth;
 }
 
-.user-page-layout {
-  display: flex;
-  flex-direction: row;
-  height: 100vh;
-  overflow: hidden;
-}
-.user-content-scrollable {
-  padding: 100px 20px 20px;
-  width: calc(100% - 380px);
+li {
+  list-style: none;
 }
 
-/* Адаптив */
-@media (max-width: 1024px) {
-  .user-page-layout {
-    flex-direction: column;
-    height: auto; /* убираем фиксированную высоту */
-    overflow: visible; /* позволяем прокрутку */
-  }
-
-  .profile-card {
-    width: 100%;
-    height: auto;
-    position: relative;
-    margin: 0 0 20px 0;
-  }
-
-  .user-content-scrollable {
-    width: 100%;
-    height: auto;
-    overflow: visible;
-    padding: 20px; /* можно подогнать под нужный отступ */
-  }
-
-  .profile-footer {
-    position: static;
-    margin-top: 20px;
-  }
+p {
+  margin: 0 !important;
 }
