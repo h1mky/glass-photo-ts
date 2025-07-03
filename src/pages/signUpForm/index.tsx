@@ -5,12 +5,24 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { fetchSignUp } from "../../services/UserService/service";
 
-// FA Icons
 import { FaEnvelope, FaUser, FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
+import { ClipLoader } from "react-spinners";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 const SignUpForm = () => {
   const [inputType, setInputType] = useState(true);
   const toggleInputType = () => setInputType((prev) => !prev);
+
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleClose = () => {
+    setStatus("idle");
+    setErrorMessage("");
+  };
 
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email").required("Required"),
@@ -23,19 +35,58 @@ const SignUpForm = () => {
       email: "",
       username: "",
       password: "",
-      userPhoto: "",
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log("Submitting", values);
-      fetchSignUp(values).then((req) => console.log(req.status));
+    onSubmit: async (values) => {
+      setStatus("loading");
+      setErrorMessage("");
+
+      try {
+        const { status: responseStatus } = await fetchSignUp(values);
+
+        if (responseStatus === 201) {
+          setStatus("success");
+          formik.resetForm();
+        } else {
+          setStatus("error");
+          setErrorMessage(`this email or username is already in use`);
+        }
+      } catch (err) {
+        setStatus("error");
+        setErrorMessage(
+          err instanceof Error
+            ? `this email or username is already in use`
+            : "Unknown error"
+        );
+      }
+      values.email = "";
+      values.password = "";
+      values.username = "";
     },
   });
 
   return (
     <div className="sign-up-container">
+      {/* Snackbar Alert */}
+      <Snackbar
+        open={status === "success" || status === "error"}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        TransitionProps={{ onExited: () => setStatus("idle") }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={status === "success" ? "success" : "error"}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {status === "success" ? "Registered successfully" : errorMessage}
+        </Alert>
+      </Snackbar>
+
+      {/* Form */}
       <form className="form" onSubmit={formik.handleSubmit}>
-        {/* Email */}
         <div className="flex-column">
           <label>Email</label>
         </div>
@@ -52,7 +103,6 @@ const SignUpForm = () => {
           <div className="error">{formik.errors.email}</div>
         )}
 
-        {/* Username */}
         <div className="flex-column">
           <label>Username</label>
         </div>
@@ -69,7 +119,6 @@ const SignUpForm = () => {
           <div className="error">{formik.errors.username}</div>
         )}
 
-        {/* Password */}
         <div className="flex-column">
           <label>Password</label>
         </div>
@@ -91,12 +140,18 @@ const SignUpForm = () => {
           <div className="error">{formik.errors.password}</div>
         )}
 
-        {/* Submit */}
-        <button type="submit" className="button-submit">
-          Sign Up
+        <button
+          type="submit"
+          className="button-submit"
+          disabled={status === "loading"}
+        >
+          {status === "loading" ? (
+            <ClipLoader size={20} color="#fff" />
+          ) : (
+            "Sign Up"
+          )}
         </button>
 
-        {/* Navigation */}
         <p className="p">
           Already have an account?{" "}
           <span className="span">
