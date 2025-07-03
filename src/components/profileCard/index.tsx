@@ -3,7 +3,7 @@ import { fetchUserProfile } from "../../services/UserService/service";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import type { DescriptionOrImage } from "../models";
+import type { DescriptionOrImage } from "../../redux/postsSlice/types";
 
 interface User {
   id: number;

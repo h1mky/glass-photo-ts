@@ -7,6 +7,11 @@ const Nav = () => {
       <div className="nav container">
         <ul className="nav-list left-side">
           <li className="nav-item">
+            <Link className="nav-link" aria-current="page" to={"/"}>
+              Main page
+            </Link>
+          </li>
+          <li className="nav-item">
             <a className="nav-link" aria-current="page" href="#">
               explore
             </a>

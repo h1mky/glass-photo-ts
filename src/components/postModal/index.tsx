@@ -12,6 +12,7 @@ import {
 import { fetchPostThunk } from "../../redux/postsSlice/slice";
 import type { AppDispatch } from "../../redux/store";
 import { ClipLoader } from "react-spinners";
+import { Link } from "react-router-dom";
 
 const PhotoModal = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,6 +49,10 @@ const PhotoModal = () => {
   const handleClose = () => {
     navigate(-1);
   };
+
+  const postDescValid = postByID?.description.Valid
+    ? postByID?.description.String
+    : "user has no bio";
 
   return (
     <div className="modal-overlay" onClick={handleClose}>
@@ -90,7 +95,11 @@ const PhotoModal = () => {
                     className="author-avatar"
                   />
                   <div className="author-details">
-                    <span className="author-name">{postByID?.post_author}</span>
+                    <span className="author-name">
+                      <Link to={`/user/${postByID?.post_author_id}`}>
+                        {postByID?.post_author}
+                      </Link>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -98,7 +107,7 @@ const PhotoModal = () => {
               <div className="photo-info">
                 <h2 className="photo-title">{postByID?.title}</h2>
                 <div className="photo-description">
-                  <p>{postByID?.description.String}</p>
+                  <p>{postDescValid}</p>
                 </div>
                 <div className="photo-metadata">
                   <div className="metadata-item">
