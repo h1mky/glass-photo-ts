@@ -322,3 +322,10 @@ body.modal-open {
   color: white;
   margin-bottom: 20px !important;
 }
+.photo-header a {
+  text-decoration: none !important;
+  color: #8e9e93 !important;
+}
+.photo-header a:hover {
+  color: #ffffff !important;
+}

@@ -26,3 +26,6 @@
 .about-footer_item p {
   color: #fffffff0;
 }
+.container.d-flex {
+  align-items: flex-start;
+}
