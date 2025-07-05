@@ -8,7 +8,7 @@ import type { DescriptionOrImage } from "../../redux/postsSlice/types";
 interface User {
   id: number;
   username: string;
-  user_img: DescriptionOrImage;
+  user_img: string;
   description: DescriptionOrImage;
 }
 
@@ -32,7 +32,7 @@ const ProfileCard = () => {
   return (
     <section className="profile-card">
       <div className="profile-hero">
-        <img src={user?.user_img.String} className="hero-image" />
+        <img src={user?.user_img} className="hero-image" />
       </div>
 
       <div className="profile-info">

@@ -132,7 +132,7 @@ const SignInForm = () => {
         </button>
 
         <p className="p">
-          Don't have an account?{" "}
+          Don't have an account?
           <span className="span">
             <Link to={"/sign-up"}>Sign Up</Link>
           </span>

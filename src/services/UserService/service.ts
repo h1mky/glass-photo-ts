@@ -27,3 +27,6 @@ export const fetchSignIn = (userData: SignInRequest) => {
     JSON.stringify(userData)
   );
 };
+export const fetchMainPageUser = () => {
+  return request("http://localhost:3000/", "GET");
+};

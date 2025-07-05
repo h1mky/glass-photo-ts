@@ -100,7 +100,7 @@ const SignUpForm = () => {
           />
         </div>
         {formik.touched.email && formik.errors.email && (
-          <div className="error">{formik.errors.email}</div>
+          <div className="error-text">{formik.errors.email}</div>
         )}
 
         <div className="flex-column">
@@ -116,7 +116,7 @@ const SignUpForm = () => {
           />
         </div>
         {formik.touched.username && formik.errors.username && (
-          <div className="error">{formik.errors.username}</div>
+          <div className="error-text">{formik.errors.username}</div>
         )}
 
         <div className="flex-column">
@@ -137,7 +137,7 @@ const SignUpForm = () => {
           )}
         </div>
         {formik.touched.password && formik.errors.password && (
-          <div className="error">{formik.errors.password}</div>
+          <div className="error-text">{formik.errors.password}</div>
         )}
 
         <button
