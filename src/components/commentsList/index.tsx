@@ -54,8 +54,10 @@ const CommentsList = () => {
       if (!id) return;
       setStatus("loading");
       setErrorMessage("");
+
       try {
         const { status: responseStatus } = await postComments(id, values);
+
         if (responseStatus === 201) {
           setStatus("success");
           resetForm();
@@ -76,15 +78,15 @@ const CommentsList = () => {
       <Snackbar
         open={status === "success" || status === "error"}
         autoHideDuration={2000}
-        onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         TransitionProps={{ onExited: () => setStatus("idle") }}
+        onClose={handleClose}
       >
         <Alert
-          onClose={handleClose}
+          sx={{ width: "100%" }}
           severity={status === "success" ? "success" : "error"}
           variant="filled"
-          sx={{ width: "100%" }}
+          onClose={handleClose}
         >
           {status === "success" ? "Comment posted" : errorMessage}
         </Alert>
