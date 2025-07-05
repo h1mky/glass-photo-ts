@@ -19,3 +19,11 @@ export const fetchSignUp = (userData: SignUpRequest) => {
     JSON.stringify(userData)
   );
 };
+
+export const fetchSignIn = (userData: SignInRequest) => {
+  return request(
+    `http://localhost:3000/sign-in`,
+    "POST",
+    JSON.stringify(userData)
+  );
+};
