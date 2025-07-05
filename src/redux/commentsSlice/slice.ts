@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchComments } from "../../services/commentsService/service";
 
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { CommentsState, CommentsItem } from "./types";
+import { type CommentsState, type CommentsItem } from "./types";
 
 export const fetchCommentsThunk = createAsyncThunk<CommentsItem[], string>(
   "comments/fetchComments",
