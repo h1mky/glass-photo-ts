@@ -1,7 +1,30 @@
 import "./Nav.css";
 import { Link } from "react-router-dom";
 
+import { fetchMainPageUserThunk } from "../../redux/userSlice/slice";
+import { useDispatch, useSelector } from "react-redux";
+
+import type { AppDispatch } from "../../redux/store";
+import {
+  selectUserMain,
+  selectUserMainLoading,
+} from "../../redux/userSlice/selector";
+
+import { useEffect } from "react";
+
+import { ClipLoader } from "react-spinners";
+
+import AvatarDropdown from "../avatarDropDown";
+
 const Nav = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const user = useSelector(selectUserMain);
+  const loading = useSelector(selectUserMainLoading);
+
+  useEffect(() => {
+    dispatch(fetchMainPageUserThunk());
+  }, []);
+
   return (
     <div className="wrapper-nav">
       <div className="nav container">
@@ -49,14 +72,22 @@ const Nav = () => {
               placeholder="Search For Posts"
             />
           </div>
-          <Link to={"/sign-in"} className="auth-btn sign-in-style">
-            <i className="fas fa-arrow-right button-icon"></i>
-            <span className="button-text">Sign In</span>
-          </Link>
-          <Link to={"/sign-up"} className="auth-btn sign-up-style">
-            <i className="fas fa-arrow-up button-icon"></i>
-            <span className="button-text">Sign Up</span>
-          </Link>
+          {loading ? (
+            <ClipLoader size={28} color="ffffff" />
+          ) : user?.id ? (
+            <AvatarDropdown {...user} />
+          ) : (
+            <>
+              <Link to={"/sign-in"} className="auth-btn sign-in-style">
+                <i className="fas fa-arrow-right button-icon"></i>
+                <span className="button-text">Sign In</span>
+              </Link>
+              <Link to={"/sign-up"} className="auth-btn sign-up-style">
+                <i className="fas fa-arrow-up button-icon"></i>
+                <span className="button-text">Sign Up</span>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </div>

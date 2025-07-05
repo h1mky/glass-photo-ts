@@ -13,12 +13,15 @@ import {
 import type { AppDispatch } from "../../redux/store.ts";
 
 import { ClipLoader } from "react-spinners";
+import { selectUserMain } from "../../redux/userSlice/selector.ts";
 
 const CommentsList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const comments = useSelector(selectComments);
   const loading = useSelector(selectCommentsLoading);
   // const error = useSelector(selectCommentsError);
+
+  const userImg = useSelector(selectUserMain);
 
   const { id } = useParams<{ id: string }>();
 
@@ -59,7 +62,7 @@ const CommentsList = () => {
       <div className="comment-form">
         <div className="comment-input-wrapper">
           <img
-            src="https://theafictionado.wordpress.com/wp-content/uploads/2017/01/luckystar.png"
+            src={userImg?.user_img}
             alt="Your avatar"
             className="comment-form-avatar"
           />

@@ -29,10 +29,12 @@ const PhotosListUser = () => {
   }, [id]);
 
   return (
-    <div className="photo-list-user">
-      {photos?.map((photo) => (
-        <PhotoListItem key={photo.id} photo={photo} />
-      ))}
+    <div className="user-photos-page">
+      <div className="photo-list-user user-style-scope">
+        {photos?.map((photo) => (
+          <PhotoListItem key={photo.id} photo={photo} />
+        ))}
+      </div>
     </div>
   );
 };

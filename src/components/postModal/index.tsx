@@ -34,7 +34,7 @@ const PhotoModal = () => {
   useEffect(() => {
     dispatch(fetchPostThunk(Number(id)));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
