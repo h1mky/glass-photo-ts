@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
 
-import PhotoListItem from "../photoListItem";
+import PhotoListItem from "../../uiComponents/photoListItem";
 import {
   selectPosts,
   selectPostsError,
