@@ -146,8 +146,8 @@ const CommentsList = () => {
             )}
           </button>
         </div>
-        {formik.touched.content && formik.errors.content && (
-          <div className="form-error">{formik.errors.content}</div>
+        {formik.errors.content && formik.submitCount > 0 && (
+          <div className="error-text">{formik.errors.content}</div>
         )}
       </form>
     </div>

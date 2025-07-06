@@ -18,3 +18,7 @@ li {
 p {
   margin: 0 !important;
 }
+.error-text {
+  color: red;
+  font-size: 13px;
+}

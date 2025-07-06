@@ -1,17 +1,17 @@
-import PhotoListItem from "../photoListItem";
-import "./photoList.css";
 import { useEffect } from "react";
-import { fetchAllPostsThunk } from "../../redux/postsSlice/slice";
-
 import { useDispatch, useSelector } from "react-redux";
+import { ClipLoader } from "react-spinners";
+
+import PhotoListItem from "../photoListItem";
 import {
   selectPosts,
   selectPostsError,
   selectPostsLoading,
 } from "../../redux/postsSlice/selector";
+import { fetchAllPostsThunk } from "../../redux/postsSlice/slice";
 import type { AppDispatch } from "../../redux/store";
 
-import { ClipLoader } from "react-spinners";
+import "./photoList.css";
 
 const PhotoList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,17 +24,19 @@ const PhotoList = () => {
     dispatch(fetchAllPostsThunk());
   }, [dispatch]);
 
+  const renderHeader = () => (
+    <div className="photo-list-title container">
+      <p>
+        <strong>Photo Gallery</strong>
+      </p>
+      <p className="photo-list_p">Explore our collection of stunning photos</p>
+    </div>
+  );
+
   if (loading) {
     return (
       <section className="wrapper-photo-list">
-        <div className="photo-list-title container">
-          <p>
-            <strong>Photo Gallery</strong>
-          </p>
-          <p className="photo-list_p">
-            Explore our collection of stunning photos
-          </p>
-        </div>
+        {renderHeader()}
         <div
           className="container"
           style={{ textAlign: "center", padding: "50px 0" }}
@@ -48,14 +50,7 @@ const PhotoList = () => {
   if (error) {
     return (
       <section className="wrapper-photo-list">
-        <div className="photo-list-title container">
-          <p>
-            <strong>Photo Gallery</strong>
-          </p>
-          <p className="photo-list_p">
-            Explore our collection of stunning photos
-          </p>
-        </div>
+        {renderHeader()}
         <div
           className="container"
           style={{ textAlign: "center", padding: "50px 0" }}
@@ -86,14 +81,7 @@ const PhotoList = () => {
 
   return (
     <section className="wrapper-photo-list">
-      <div className="photo-list-title container">
-        <p>
-          <strong>Photo Gallery</strong>
-        </p>
-        <p className="photo-list_p">
-          Explore our collection of stunning photos
-        </p>
-      </div>
+      {renderHeader()}
       <div className="container photo-list-grid">
         {photos?.map((photo) => (
           <PhotoListItem key={photo.id} photo={photo} />
