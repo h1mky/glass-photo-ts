@@ -1,4 +1,4 @@
-import PhotoListItem from "../photoListItem";
+import PhotoListItem from "../../uiComponents/photoListItem";
 import "./userPhotoList.css";
 
 import { useSelector, useDispatch } from "react-redux";

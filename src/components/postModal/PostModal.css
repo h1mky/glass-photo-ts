@@ -329,3 +329,7 @@ body.modal-open {
 .photo-header a:hover {
   color: #ffffff !important;
 }
+.text-comms {
+  color: #8e8e93;
+  font-size: 13px;
+}

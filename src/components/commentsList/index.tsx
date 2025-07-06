@@ -20,11 +20,13 @@ import { postComments } from "../../services/commentsService/service.ts";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
+import { Link } from "react-router-dom";
+
 const CommentsList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const comments = useSelector(selectComments);
   const loading = useSelector(selectCommentsLoading);
-  const userImg = useSelector(selectUserMain);
+  const userData = useSelector(selectUserMain);
   const { id } = useParams<{ id: string }>();
 
   const [status, setStatus] = useState<
@@ -116,7 +118,57 @@ const CommentsList = () => {
         )}
       </div>
 
-      <form onSubmit={formik.handleSubmit} className="comment-form">
+      {!userData?.id ? (
+        <div className="d-flex justify-content-between px-3 py-2">
+          <div className="d-flex flex-column text-comms">
+            <p>glass-photo</p>
+            <p>Photography Community</p>
+          </div>
+          <div>
+            <Link to={"/sign-up"} className="auth-btn sign-up-style">
+              <i className="fas fa-arrow-up button-icon"></i>
+              <span className="button-text">Sign Up</span>
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <form onSubmit={formik.handleSubmit} className="comment-form">
+          <div className="comment-input-wrapper">
+            <img
+              src={userData?.user_img}
+              alt="Your avatar"
+              className="comment-form-avatar"
+            />
+            <input
+              type="text"
+              name="content"
+              placeholder="Add a comment..."
+              className="comment-input"
+              value={formik.values.content}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            <button
+              type="submit"
+              className="comment-submit"
+              disabled={
+                status === "loading" || !formik.isValid || formik.isSubmitting
+              }
+            >
+              {status === "loading" ? (
+                <ClipLoader size={20} color="#fff" />
+              ) : (
+                "Post"
+              )}
+            </button>
+          </div>
+          {formik.errors.content && formik.submitCount > 0 && (
+            <div className="error-text">{formik.errors.content}</div>
+          )}
+        </form>
+      )}
+
+      {/* <form onSubmit={formik.handleSubmit} className="comment-form">
         <div className="comment-input-wrapper">
           <img
             src={userImg?.user_img}
@@ -149,7 +201,7 @@ const CommentsList = () => {
         {formik.errors.content && formik.submitCount > 0 && (
           <div className="error-text">{formik.errors.content}</div>
         )}
-      </form>
+      </form> */}
     </div>
   );
 };
