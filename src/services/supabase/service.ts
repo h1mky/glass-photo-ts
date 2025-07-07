@@ -1,34 +1,30 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl: string = "https://hnfvvhglaawcuerxyysp.supabase.co";
-const supabaseKey: string = process.env.SUPABASE_KEY ?? "";
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 if (!supabaseKey) {
   throw new Error("SUPABASE_KEY environment variable is not set.");
 }
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-interface UploadPhotoEvent extends Event {
-  target: HTMLInputElement & EventTarget;
-}
-
-export const uploadPhoto = async (e: UploadPhotoEvent): Promise<void> => {
-  const avatarFile = e.target.files?.[0];
-  if (!avatarFile) return;
-
-  const filePath = `public/${crypto.randomUUID()}-${avatarFile.name}`;
+export async function uploadPhoto(file: File): Promise<string | undefined> {
+  const filePath = `${crypto.randomUUID()}-${encodeURIComponent(file.name)}`;
 
   const { error } = await supabase.storage
     .from("user-photos")
-    .upload(filePath, avatarFile);
+    .upload(filePath, file);
 
   if (error) {
-    console.error("Upload failed", error);
+    console.error("Upload error:", error);
     return;
   }
 
-  const { data: urlData } = supabase.storage
-    .from("user-photos")
-    .getPublicUrl(filePath);
+  const { data } = supabase.storage.from("user-photos").getPublicUrl(filePath);
 
-  console.log("Uploaded URL:", urlData.publicUrl);
-};
+  if (!data?.publicUrl) {
+    console.error("Failed to get public URL");
+    return;
+  }
+
+  return data.publicUrl;
+}
