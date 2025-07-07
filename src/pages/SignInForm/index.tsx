@@ -31,8 +31,14 @@ const SignInForm = () => {
   };
 
   const validationSchema = Yup.object({
-    email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string().min(6, "Min 6 characters").required("Required"),
+    email: Yup.string()
+      .transform((value) => value.trim())
+      .email("Invalid email")
+      .required("Required"),
+    password: Yup.string()
+      .transform((value) => value.trim())
+      .min(6, "Min 6 characters")
+      .required("Required"),
   });
 
   const formik = useFormik({

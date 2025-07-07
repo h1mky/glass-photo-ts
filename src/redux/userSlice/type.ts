@@ -1,5 +1,7 @@
 export interface UserMain {
   id: number;
+  username: string;
+  description: string;
   user_img: string;
 }
 
