@@ -122,3 +122,56 @@ textarea:focus {
 .submit-button:hover {
   background: rgb(35, 150, 54);
 }
+
+.unauth-message {
+  background-color: #18181a;
+  border: 1px solid #333;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 500px;
+  margin: 60px auto;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.unauth-message h3 {
+  font-size: 24px;
+  margin-bottom: 12px;
+  color: #f1f1f1;
+}
+
+.unauth-message p {
+  font-size: 16px;
+  margin-bottom: 24px;
+  color: #bbb;
+}
+
+.auth-btn_settings {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.auth-btn_settings {
+  color: #fff;
+}
+
+.auth-btn_settings :hover {
+  background-color: #303f9f;
+  transform: translateY(-1px);
+}
+
+.button-icon {
+  font-size: 16px;
+}
+
+.button-text {
+  display: inline-block;
+}
