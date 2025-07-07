@@ -36,7 +36,7 @@ const Nav = () => {
           </li>
           <li className="nav-item">
             <a className="nav-link" aria-current="page" href="#">
-              explore
+              Explore
             </a>
           </li>
           <li className="nav-item">

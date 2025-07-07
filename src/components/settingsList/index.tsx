@@ -4,11 +4,25 @@ import { selectUserMain } from "../../redux/userSlice/selector";
 import { useFormik } from "formik";
 import { patchUserData } from "../../services/UserService/service";
 import { uploadPhoto } from "../../services/supabase/service";
+import { useState } from "react";
+
+import { Snackbar, Alert } from "@mui/material";
 
 import "./settingsList.css";
+import { ClipLoader } from "react-spinners";
 
 const SettingsList = () => {
   const userData = useSelector(selectUserMain);
+
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleClose = () => {
+    setStatus("idle");
+    setErrorMessage("");
+  };
 
   const initialValues = {
     description: userData?.description || "",
@@ -27,11 +41,19 @@ const SettingsList = () => {
         console.log("No changes, skipping request");
         return;
       }
+      setStatus("loading");
+      setErrorMessage("");
 
       try {
-        await patchUserData(values);
-        console.log("Profile updated");
+        const { status: responseStatus } = await patchUserData(values);
+        if (responseStatus === 200) {
+          setStatus("success");
+        } else {
+          setStatus("error");
+          setErrorMessage("Failed to Update profile");
+        }
       } catch (error) {
+        setStatus("error");
         console.error("Update failed", error);
       }
     },
@@ -39,6 +61,23 @@ const SettingsList = () => {
 
   return (
     <div className="settings-background">
+      <Snackbar
+        open={status === "success" || status === "error"}
+        autoHideDuration={2000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        TransitionProps={{ onExited: () => setStatus("idle") }}
+        onClose={handleClose}
+      >
+        <Alert
+          sx={{ width: "100%" }}
+          severity={status === "success" ? "success" : "error"}
+          variant="filled"
+          onClose={handleClose}
+        >
+          {status === "success" ? "Comment posted" : errorMessage}
+        </Alert>
+      </Snackbar>
+
       <div className="profile-container">
         <h2>Public profile</h2>
 
@@ -65,8 +104,18 @@ const SettingsList = () => {
               />
             </div>
 
-            <button className="submit-button btn" type="submit">
-              <span>Update profile</span>
+            <button
+              className="submit-button btn"
+              type="submit"
+              disabled={
+                status === "loading" || formik.isSubmitting || !formik.isValid
+              }
+            >
+              {status === "loading" ? (
+                <ClipLoader color="#ffff" size={20} />
+              ) : (
+                <span>Update Profile</span>
+              )}
             </button>
           </div>
 
