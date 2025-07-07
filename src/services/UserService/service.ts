@@ -6,6 +6,11 @@ export interface SignUpRequest {
   password: string;
 }
 
+export interface EditedData {
+  user_img?: string;
+  description?: string;
+}
+
 export type SignInRequest = Omit<SignUpRequest, "username">;
 
 export const fetchUserProfile = (ID: number) => {
@@ -29,4 +34,12 @@ export const fetchSignIn = (userData: SignInRequest) => {
 };
 export const fetchMainPageUser = () => {
   return request("http://localhost:3000/", "GET");
+};
+
+export const patchUserData = (editedData: EditedData) => {
+  return request(
+    "http://localhost:3000/user",
+    "PATCH",
+    JSON.stringify(editedData)
+  );
 };

@@ -108,3 +108,17 @@ textarea:focus {
   transition-duration: 0.3s;
   box-shadow: 2px 2px 0px white;
 }
+.submit-button {
+  background: rgb(35, 134, 54);
+  border-radius: 8px;
+  padding: 0 12px;
+  align-items: center;
+  height: 30px;
+}
+.submit-button span {
+  color: white;
+  text-decoration: solid;
+}
+.submit-button:hover {
+  background: rgb(35, 150, 54);
+}
