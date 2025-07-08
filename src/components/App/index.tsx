@@ -7,6 +7,7 @@ const SignUpForm = lazy(() => import("../../pages/signUpForm"));
 const SignInForm = lazy(() => import("../../pages/SignInForm"));
 const UserPage = lazy(() => import("../../pages/UserPage"));
 const SettingsPage = lazy(() => import("../../pages/SettingsPage"));
+const Page404 = lazy(() => import("../../pages/page404/index"));
 
 import { ClipLoader } from "react-spinners";
 
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/sign-in" element={<SignInForm />} />
         <Route path="/user/:id" element={<UserPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="*" element={<Page404 />} />
       </Routes>
 
       {state?.backgroundLocation && (
