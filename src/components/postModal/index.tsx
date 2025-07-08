@@ -14,6 +14,7 @@ import {
 import type { AppDispatch } from "../../redux/store";
 
 import "./PostModal.css";
+import NotFoundPage from "../../pages/page404";
 
 const PhotoModal = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,7 +28,9 @@ const PhotoModal = () => {
     dispatch(fetchPostThunk(Number(id)));
   }, [id, dispatch]);
 
-  return (
+  return !post ? (
+    <NotFoundPage />
+  ) : (
     <ModalContainer onClose={() => navigate(-1)}>
       {loading || !post ? (
         <div
