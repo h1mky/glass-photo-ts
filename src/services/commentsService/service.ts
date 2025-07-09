@@ -11,7 +11,7 @@ export interface CreateCommentPayload {
 }
 
 export interface CommentsItem {
-  idComment: number;
+  id: number;
   userId: number;
   userImg: string;
   userName: string;
@@ -41,5 +41,13 @@ export const useCommentsPost = (postId: string) => {
         "POST",
         JSON.stringify(body)
       ),
+  });
+};
+
+export const useDeleteComment = () => {
+  return useMutation({
+    mutationFn: (commentId: number) =>
+      request(`http://localhost:3000/comments/${commentId}`, "DELETE"),
+    onError: (error) => console.log(error),
   });
 };

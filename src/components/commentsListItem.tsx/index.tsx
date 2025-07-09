@@ -1,14 +1,35 @@
 import { Link } from "react-router-dom";
-import type { CommentsItem } from "../../redux/commentsSlice/types";
+import {
+  useDeleteComment,
+  type CommentsItem,
+} from "../../services/commentsService/service";
+import { useState } from "react";
+import { FaTrash } from "react-icons/fa";
+
+import { Alert, Snackbar } from "@mui/material";
 
 const CommentItem: React.FC<CommentsItem> = ({
-  idComment,
+  id,
   userId,
   userName,
   content,
   created_at,
   userImg,
 }) => {
+  const {
+    mutate: deleteComment,
+    isError,
+    isSuccess,
+    reset,
+  } = useDeleteComment();
+
+  const [, setSubmitError] = useState("");
+
+  const handleClose = () => {
+    reset();
+    setSubmitError("");
+  };
+
   const formatTimeAgo = (date: Date) => {
     const formatedDate = new Date(date);
     const now = new Date();
@@ -27,7 +48,23 @@ const CommentItem: React.FC<CommentsItem> = ({
   };
 
   return (
-    <div className="comment-item" key={idComment}>
+    <div className="comment-item" key={id}>
+      <Snackbar
+        open={isSuccess || isError}
+        autoHideDuration={2000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        TransitionProps={{ onExited: handleClose }}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={isSuccess ? "success" : "error"}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {isSuccess ? "Comment deleted" : "Error delete comment"}
+        </Alert>
+      </Snackbar>
       <Link className="comment-avatar" to={`/user/${userId.toString()}`}>
         <img src={userImg} alt={userName} />
       </Link>
@@ -40,6 +77,7 @@ const CommentItem: React.FC<CommentsItem> = ({
         </div>
         <div className="comment-text">{content}</div>
       </div>
+      <FaTrash className="comment-delete" onClick={() => deleteComment(id)} />
     </div>
   );
 };

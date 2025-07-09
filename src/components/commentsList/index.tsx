@@ -90,9 +90,9 @@ const CommentsList = () => {
         ) : (
           commentsData?.map((comment) => (
             <CommentItem
-              key={comment.idComment}
+              key={comment.id}
               userId={comment.userId}
-              idComment={comment.idComment}
+              id={comment.id}
               userImg={comment.userImg}
               userName={comment.userName}
               content={comment.content}
