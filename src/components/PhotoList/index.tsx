@@ -1,28 +1,11 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { ClipLoader } from "react-spinners";
-
 import PhotoListItem from "../../uiComponents/photoListItem";
-import {
-  selectPosts,
-  selectPostsError,
-  selectPostsLoading,
-} from "../../redux/postsSlice/selector";
-import { fetchAllPostsThunk } from "../../redux/postsSlice/slice";
-import type { AppDispatch } from "../../redux/store";
 
 import "./photoList.css";
+import { useFetchAllPosts } from "../../services/PostService/service";
 
 const PhotoList = () => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const photos = useSelector(selectPosts);
-  const loading = useSelector(selectPostsLoading);
-  const error = useSelector(selectPostsError);
-
-  useEffect(() => {
-    dispatch(fetchAllPostsThunk());
-  }, [dispatch]);
+  const { data: postData, isPending, isError, refetch } = useFetchAllPosts();
 
   const renderHeader = () => (
     <div className="photo-list-title container">
@@ -33,7 +16,7 @@ const PhotoList = () => {
     </div>
   );
 
-  if (loading) {
+  if (isPending) {
     return (
       <section className="wrapper-photo-list">
         {renderHeader()}
@@ -47,7 +30,7 @@ const PhotoList = () => {
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <section className="wrapper-photo-list">
         {renderHeader()}
@@ -60,7 +43,7 @@ const PhotoList = () => {
               Oops! Something went wrong while loading photos
             </p>
             <button
-              onClick={() => dispatch(fetchAllPostsThunk())}
+              onClick={() => refetch()}
               style={{
                 padding: "10px 20px",
                 backgroundColor: "#007bff",
@@ -83,7 +66,7 @@ const PhotoList = () => {
     <section className="wrapper-photo-list">
       {renderHeader()}
       <div className="container photo-list-grid">
-        {photos?.map((photo) => (
+        {postData?.map((photo) => (
           <PhotoListItem key={photo.id} photo={photo} />
         ))}
       </div>

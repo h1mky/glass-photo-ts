@@ -20,11 +20,3 @@ export interface PostByID {
   title: string;
   created_at: Date;
 }
-
-export interface PostsState {
-  photos: Photo[] | null;
-  postById: PostByID | null;
-  userPosts: Photo[] | null;
-  error: string | null;
-  loading: boolean;
-}
