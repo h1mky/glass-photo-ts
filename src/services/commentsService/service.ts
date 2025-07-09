@@ -1,3 +1,4 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { request } from "../../hook/http.hook";
 
 export interface CreateComment {
@@ -9,14 +10,36 @@ export interface CreateCommentPayload {
   content: string;
 }
 
-export const fetchComments = (postId: string) => {
-  return request(`http://localhost:3000/comments/${postId}`, "GET");
+export interface CommentsItem {
+  idComment: number;
+  userId: number;
+  userImg: string;
+  userName: string;
+  content: string;
+  created_at: Date;
+}
+
+export const useCommentsGet = (postId: string) => {
+  return useQuery<CommentsItem[]>({
+    queryKey: ["comments-post", postId],
+    queryFn: async () => {
+      const res = await request<CommentsItem[]>(
+        `http://localhost:3000/comments/${postId}`,
+        "GET"
+      );
+      return res.data;
+    },
+    enabled: !!postId,
+  });
 };
 
-export const postComments = (postId: string, body: CreateComment) => {
-  return request(
-    `http://localhost:3000/comments/${postId}`,
-    "POST",
-    JSON.stringify(body)
-  );
+export const useCommentsPost = (postId: string) => {
+  return useMutation({
+    mutationFn: (body: CreateComment) =>
+      request(
+        `http://localhost:3000/comments/${postId}`,
+        "POST",
+        JSON.stringify(body)
+      ),
+  });
 };

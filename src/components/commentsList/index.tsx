@@ -1,110 +1,94 @@
 import CommentItem from "../commentsListItem.tsx";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
-import { fetchCommentsThunk } from "../../redux/commentsSlice/slice.ts";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectComments,
-  selectCommentsLoading,
-} from "../../redux/commentsSlice/selector.ts";
-
-import type { AppDispatch } from "../../redux/store.ts";
-
+import { useParams, Link } from "react-router-dom";
+import { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { ClipLoader } from "react-spinners";
 import { Snackbar, Alert } from "@mui/material";
 
+import {
+  useCommentsGet,
+  useCommentsPost,
+} from "../../services/commentsService/service.ts";
+import { useSelector } from "react-redux";
 import { selectUserMain } from "../../redux/userSlice/selector.ts";
-import { postComments } from "../../services/commentsService/service.ts";
-
-import { useFormik } from "formik";
-import * as Yup from "yup";
-
-import { Link } from "react-router-dom";
 
 const CommentsList = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const comments = useSelector(selectComments);
-  const loading = useSelector(selectCommentsLoading);
-  const userData = useSelector(selectUserMain);
   const { id } = useParams<{ id: string }>();
+  const postId = id ?? "";
+  const userData = useSelector(selectUserMain);
 
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
-  const [errorMessage, setErrorMessage] = useState("");
+  const {
+    data: commentsData,
+    isLoading: isCommentsLoading,
+    refetch,
+  } = useCommentsGet(postId);
 
-  useEffect(() => {
-    if (id) dispatch(fetchCommentsThunk(id));
-  }, [id, dispatch]);
+  const {
+    mutate: postComment,
+    isPending: isPosting,
+    isSuccess,
+    isError,
+    reset,
+  } = useCommentsPost(postId);
+
+  const [submitError, setSubmitError] = useState("");
 
   const handleClose = () => {
-    setStatus("idle");
-    setErrorMessage("");
+    reset();
+    setSubmitError("");
   };
-
-  const validationSchema = Yup.object({
-    content: Yup.string()
-      .required("Comment required")
-      .max(128, "Max 128 characters"),
-  });
 
   const formik = useFormik({
     initialValues: { content: "" },
-    validationSchema,
+    validationSchema: Yup.object({
+      content: Yup.string().required("Comment required").max(128),
+    }),
     onSubmit: async (values, { resetForm }) => {
-      if (!id) return;
-      setStatus("loading");
-      setErrorMessage("");
+      if (!postId) return;
 
-      try {
-        const { status: responseStatus } = await postComments(id, values);
-
-        if (responseStatus === 201) {
-          setStatus("success");
+      postComment(values, {
+        onSuccess: () => {
           resetForm();
-          dispatch(fetchCommentsThunk(id));
-        } else {
-          setStatus("error");
-          setErrorMessage("Failed to post comment");
-        }
-      } catch (err) {
-        setStatus("error");
-        setErrorMessage(err instanceof Error ? err.message : "Unknown error");
-      }
+          refetch();
+        },
+        onError: (err) => {
+          setSubmitError(err?.message || "Failed to post comment");
+        },
+      });
     },
   });
 
   return (
     <div className="comments-section">
       <Snackbar
-        open={status === "success" || status === "error"}
+        open={isSuccess || isError}
         autoHideDuration={2000}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        TransitionProps={{ onExited: () => setStatus("idle") }}
+        TransitionProps={{ onExited: handleClose }}
         onClose={handleClose}
       >
         <Alert
-          sx={{ width: "100%" }}
-          severity={status === "success" ? "success" : "error"}
-          variant="filled"
           onClose={handleClose}
+          severity={isSuccess ? "success" : "error"}
+          variant="filled"
+          sx={{ width: "100%" }}
         >
-          {status === "success" ? "Comment posted" : errorMessage}
+          {isSuccess ? "Comment posted" : submitError}
         </Alert>
       </Snackbar>
 
       <div className="comments-header">
-        <h3>Comments ({comments?.length})</h3>
+        <h3>Comments ({commentsData?.length || 0})</h3>
       </div>
 
       <div className="comments-list">
-        {loading ? (
+        {isCommentsLoading ? (
           <div className="loader-container">
             <ClipLoader color="#f0f0f0" />
           </div>
         ) : (
-          comments?.map((comment) => (
+          commentsData?.map((comment) => (
             <CommentItem
               key={comment.idComment}
               userId={comment.userId}
@@ -124,18 +108,16 @@ const CommentsList = () => {
             <p>glass-photo</p>
             <p>Photography Community</p>
           </div>
-          <div>
-            <Link to={"/sign-up"} className="auth-btn sign-up-style">
-              <i className="fas fa-arrow-up button-icon"></i>
-              <span className="button-text">Sign Up</span>
-            </Link>
-          </div>
+          <Link to={"/sign-up"} className="auth-btn sign-up-style">
+            <i className="fas fa-arrow-up button-icon"></i>
+            <span className="button-text">Sign Up</span>
+          </Link>
         </div>
       ) : (
         <form onSubmit={formik.handleSubmit} className="comment-form">
           <div className="comment-input-wrapper">
             <img
-              src={userData?.user_img}
+              src={userData.user_img}
               alt="Your avatar"
               className="comment-form-avatar"
             />
@@ -151,15 +133,9 @@ const CommentsList = () => {
             <button
               type="submit"
               className="comment-submit"
-              disabled={
-                status === "loading" || !formik.isValid || formik.isSubmitting
-              }
+              disabled={isPosting || !formik.isValid || formik.isSubmitting}
             >
-              {status === "loading" ? (
-                <ClipLoader size={20} color="#fff" />
-              ) : (
-                "Post"
-              )}
+              {isPosting ? <ClipLoader size={20} color="#fff" /> : "Post"}
             </button>
           </div>
           {formik.errors.content && formik.submitCount > 0 && (
@@ -167,41 +143,6 @@ const CommentsList = () => {
           )}
         </form>
       )}
-
-      {/* <form onSubmit={formik.handleSubmit} className="comment-form">
-        <div className="comment-input-wrapper">
-          <img
-            src={userImg?.user_img}
-            alt="Your avatar"
-            className="comment-form-avatar"
-          />
-          <input
-            type="text"
-            name="content"
-            placeholder="Add a comment..."
-            className="comment-input"
-            value={formik.values.content}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          <button
-            type="submit"
-            className="comment-submit"
-            disabled={
-              status === "loading" || !formik.isValid || formik.isSubmitting
-            }
-          >
-            {status === "loading" ? (
-              <ClipLoader size={20} color="#fff" />
-            ) : (
-              "Post"
-            )}
-          </button>
-        </div>
-        {formik.errors.content && formik.submitCount > 0 && (
-          <div className="error-text">{formik.errors.content}</div>
-        )}
-      </form> */}
     </div>
   );
 };
