@@ -1,32 +1,36 @@
 import PhotoListItem from "../../uiComponents/photoListItem";
-import "./userPhotoList.css";
-
-import { useSelector, useDispatch } from "react-redux";
-import { fetchUserPostsThunk } from "../../redux/postsSlice/slice";
-import {
-  selectUserPosts,
-  // selectUserPostsError,
-  // selectUserPostsLoading,
-} from "../../redux/postsSlice/selector";
-
 import { useParams } from "react-router-dom";
+import { useFetchUserPosts } from "../../services/PostService/service";
+import { ClipLoader } from "react-spinners";
 
-import type { AppDispatch } from "../../redux/store";
-import { useEffect } from "react";
+import "./userPhotoList.css";
 
 const PhotosListUser = () => {
   const { id } = useParams();
 
-  const dispatch = useDispatch<AppDispatch>();
+  const { data: photos, isPending, isError } = useFetchUserPosts(Number(id));
 
-  const photos = useSelector(selectUserPosts);
-  // const loading = useSelector(selectUserPostsLoading);
-  // const error = useSelector(selectUserPostsError);
+  if (isPending) {
+    return (
+      <div className="user-photos-page">
+        <div className="photo-list-user user-style-scope loader-container">
+          <ClipLoader color="#f0f0f0" />
+        </div>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    dispatch(fetchUserPostsThunk(Number(id)));
-    // eslint-disable-next-line
-  }, [id]);
+  if (isError) {
+    return (
+      <div className="user-photos-page">
+        <div className="photo-list-user user-style-scope">
+          <p style={{ color: "red", textAlign: "center" }}>
+            Failed to load user photos.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="user-photos-page">

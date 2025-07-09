@@ -11,11 +11,13 @@ const PhotoModal = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data: post, isPending } = useFetchPostById(Number(id));
+  const { data: post, isPending, isError } = useFetchPostById(Number(id));
 
-  return !post ? (
-    <NotFoundPage />
-  ) : (
+  if (isError) {
+    return <NotFoundPage />;
+  }
+
+  return (
     <ModalContainer onClose={() => navigate(-1)}>
       {isPending || !post ? (
         <div
