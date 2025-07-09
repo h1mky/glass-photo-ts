@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { fetchSignUp } from "../../services/UserService/service";
+import { useSignUp } from "../../services/UserService/service";
 
 import { FaEnvelope, FaUser, FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import { ClipLoader } from "react-spinners";
@@ -14,15 +14,9 @@ const SignUpForm = () => {
   const [inputType, setInputType] = useState(true);
   const toggleInputType = () => setInputType((prev) => !prev);
 
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
-  const [errorMessage, setErrorMessage] = useState("");
+  const { mutateAsync, isPending, isSuccess, isError, error } = useSignUp();
 
-  const handleClose = () => {
-    setStatus("idle");
-    setErrorMessage("");
-  };
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -46,55 +40,43 @@ const SignUpForm = () => {
       password: "",
     },
     validationSchema,
-    onSubmit: async (values) => {
-      setStatus("loading");
-      setErrorMessage("");
-
+    onSubmit: async (values, { resetForm }) => {
       try {
-        const { status: responseStatus } = await fetchSignUp(values);
-
-        if (responseStatus === 201) {
-          setStatus("success");
-          formik.resetForm();
-        } else {
-          setStatus("error");
-          setErrorMessage(`this email or username is already in use`);
-        }
-      } catch (err) {
-        setStatus("error");
-        setErrorMessage(
-          err instanceof Error
-            ? `this email or username is already in use`
-            : "Unknown error"
-        );
+        await mutateAsync(values);
+        setSnackbarOpen(true);
+        resetForm();
+      } catch {
+        setSnackbarOpen(true);
       }
-      values.email = "";
-      values.password = "";
-      values.username = "";
     },
   });
 
+  const handleClose = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
     <div className="sign-up-container">
-      {/* Snackbar Alert */}
       <Snackbar
-        open={status === "success" || status === "error"}
-        autoHideDuration={2000}
+        open={snackbarOpen && (isSuccess || isError)}
+        autoHideDuration={3000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        TransitionProps={{ onExited: () => setStatus("idle") }}
       >
         <Alert
           onClose={handleClose}
-          severity={status === "success" ? "success" : "error"}
+          severity={isSuccess ? "success" : "error"}
           variant="filled"
           sx={{ width: "100%" }}
         >
-          {status === "success" ? "Registered successfully" : errorMessage}
+          {isSuccess
+            ? "Registered successfully"
+            : error instanceof Error
+            ? error.message || "Registration error"
+            : "Registration error"}
         </Alert>
       </Snackbar>
 
-      {/* Form */}
       <form className="form" onSubmit={formik.handleSubmit}>
         <div className="flex-column">
           <label>Email</label>
@@ -149,16 +131,8 @@ const SignUpForm = () => {
           <div className="error-text">{formik.errors.password}</div>
         )}
 
-        <button
-          type="submit"
-          className="button-submit"
-          disabled={status === "loading"}
-        >
-          {status === "loading" ? (
-            <ClipLoader size={20} color="#fff" />
-          ) : (
-            "Sign Up"
-          )}
+        <button type="submit" className="button-submit" disabled={isPending}>
+          {isPending ? <ClipLoader size={20} color="#fff" /> : "Sign Up"}
         </button>
 
         <p className="p">

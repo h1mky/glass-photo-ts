@@ -1,4 +1,5 @@
 import { request } from "../../hook/http.hook";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 export interface SignUpRequest {
   email: string;
@@ -13,33 +14,35 @@ export interface EditedData {
 
 export type SignInRequest = Omit<SignUpRequest, "username">;
 
-export const fetchUserProfile = (ID: number) => {
-  return request(`http://localhost:3000/user/${ID}`, "GET");
-};
-
-export const fetchSignUp = (userData: SignUpRequest) => {
-  return request(
-    `http://localhost:3000/sign-up`,
-    "POST",
-    JSON.stringify(userData)
-  );
-};
-
-export const fetchSignIn = (userData: SignInRequest) => {
-  return request(
-    `http://localhost:3000/sign-in`,
-    "POST",
-    JSON.stringify(userData)
-  );
-};
 export const fetchMainPageUser = () => {
   return request("http://localhost:3000/", "GET");
 };
 
-export const patchUserData = (editedData: EditedData) => {
-  return request(
-    "http://localhost:3000/user",
-    "PATCH",
-    JSON.stringify(editedData)
-  );
+export const useUserProfile = (id: number) => {
+  return useQuery({
+    queryKey: ["user-profile", id],
+    queryFn: () => request(`http://localhost:3000/user/${id}`, "GET"),
+    enabled: !!id,
+  });
 };
+
+export const useSignUp = () =>
+  useMutation({
+    mutationFn: (data: SignUpRequest) =>
+      request("http://localhost:3000/sign-up", "POST", JSON.stringify(data)),
+  });
+
+export const useSignIn = () =>
+  useMutation({
+    mutationFn: (data: SignInRequest) =>
+      request("http://localhost:3000/sign-in", "POST", JSON.stringify(data)),
+    onSuccess: (data) => {
+      localStorage.setItem("authToken", data.token);
+    },
+  });
+
+export const usePatchUser = () =>
+  useMutation({
+    mutationFn: (data: EditedData) =>
+      request("http://localhost:3000/user", "PATCH", JSON.stringify(data)),
+  });

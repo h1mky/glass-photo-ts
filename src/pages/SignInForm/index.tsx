@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import { fetchSignIn } from "../../services/UserService/service";
+import { useSignIn } from "../../services/UserService/service";
 import { useNavigate } from "react-router-dom";
 
 import { useFormik } from "formik";
@@ -18,17 +18,14 @@ const SignInForm = () => {
   const inputTypePassword = inputType ? "password" : "text";
   const toggleInputType = () => setInputType((state) => !state);
 
+  const { mutateAsync, isPending, isError, isSuccess, error } = useSignIn();
+
   const navigate = useNavigate();
 
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handleClose = () => {
-    setStatus("idle");
-    setErrorMessage("");
-  };
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarStatus, setSnackbarStatus] = useState<
+    "success" | "error" | null
+  >(null);
 
   const validationSchema = Yup.object({
     email: Yup.string()
@@ -47,47 +44,44 @@ const SignInForm = () => {
       password: "",
     },
     validationSchema,
-    onSubmit: async (values) => {
-      setStatus("loading");
-      setErrorMessage("");
-
+    onSubmit: async (values, { resetForm }) => {
       try {
-        const { status: responseStatus, data } = await fetchSignIn(values);
+        await mutateAsync(values);
+        resetForm();
+        setSnackbarOpen(true);
+        setSnackbarStatus("success");
 
-        if (responseStatus === 200) {
-          setStatus("success");
-          formik.resetForm();
-          localStorage.setItem("authToken", data.token);
-          navigate("/", { replace: true });
-        } else {
-          setStatus("error");
-          setErrorMessage("Incorrect email or password");
-        }
-      } catch (err) {
-        setStatus("error");
-        setErrorMessage(
-          err instanceof Error ? "Incorrect email or password" : "Unknown error"
-        );
+        navigate("/", { replace: true });
+      } catch {
+        setSnackbarOpen(true);
+        setSnackbarStatus("error");
       }
     },
   });
 
+  const handleClose = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
     <div className="sign-up-container">
       <Snackbar
-        open={status === "success" || status === "error"}
+        open={snackbarOpen && (isSuccess || isError)}
         autoHideDuration={2000}
         onClose={handleClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        TransitionProps={{ onExited: () => setStatus("idle") }}
       >
         <Alert
           onClose={handleClose}
-          severity={status === "success" ? "success" : "error"}
+          severity={snackbarStatus === "success" ? "success" : "error"}
           variant="filled"
           sx={{ width: "100%" }}
         >
-          {status === "success" ? "Registered successfully" : errorMessage}
+          {isSuccess
+            ? "Registered successfully"
+            : error instanceof Error
+            ? error.message || "Registration error"
+            : "Registration error"}
         </Alert>
       </Snackbar>
 
@@ -129,12 +123,8 @@ const SignInForm = () => {
           <div className="error-text">{formik.errors.password}</div>
         )}
 
-        <button className="button-submit" disabled={status === "loading"}>
-          {status === "loading" ? (
-            <ClipLoader size={20} color="#fff" />
-          ) : (
-            "Sign In"
-          )}
+        <button className="button-submit" disabled={isPending}>
+          {isPending ? <ClipLoader size={20} color="#fff" /> : "Sign In"}
         </button>
 
         <p className="p">
