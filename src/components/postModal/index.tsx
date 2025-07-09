@@ -1,38 +1,23 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-
 import ModalContainer from "../../uiComponents/photoModal";
 import PhotoModalContent from "../../uiComponents/photoModalContent";
-
-import { fetchPostThunk } from "../../redux/postsSlice/slice";
-import {
-  selectPostById,
-  selectPostByIdLoading,
-} from "../../redux/postsSlice/selector";
-import type { AppDispatch } from "../../redux/store";
+import NotFoundPage from "../../pages/page404";
+import { useFetchPostById } from "../../services/PostService/service";
 
 import "./PostModal.css";
-import NotFoundPage from "../../pages/page404";
 
 const PhotoModal = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const post = useSelector(selectPostById);
-  const loading = useSelector(selectPostByIdLoading);
-
-  useEffect(() => {
-    dispatch(fetchPostThunk(Number(id)));
-  }, [id, dispatch]);
+  const { data: post, isPending } = useFetchPostById(Number(id));
 
   return !post ? (
     <NotFoundPage />
   ) : (
     <ModalContainer onClose={() => navigate(-1)}>
-      {loading || !post ? (
+      {isPending || !post ? (
         <div
           style={{
             height: "100vh",
