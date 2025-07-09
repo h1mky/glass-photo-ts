@@ -1,6 +1,7 @@
+// CommentsList.tsx
+import { useState } from "react";
 import CommentItem from "../commentsListItem.tsx";
 import { useParams, Link } from "react-router-dom";
-import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { ClipLoader } from "react-spinners";
@@ -9,7 +10,9 @@ import { Snackbar, Alert } from "@mui/material";
 import {
   useCommentsGet,
   useCommentsPost,
+  useDeleteComment,
 } from "../../services/commentsService/service.ts";
+
 import { useSelector } from "react-redux";
 import { selectUserMain } from "../../redux/userSlice/selector.ts";
 
@@ -24,6 +27,13 @@ const CommentsList = () => {
     refetch,
   } = useCommentsGet(postId);
 
+  const { mutate: deleteComment, reset: resetDeleteStatus } =
+    useDeleteComment();
+
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const [deleteError, setDeleteError] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
   const {
     mutate: postComment,
     isPending: isPosting,
@@ -32,11 +42,24 @@ const CommentsList = () => {
     reset,
   } = useCommentsPost(postId);
 
-  const [submitError, setSubmitError] = useState("");
+  const handleDelete = (commentId: number) => {
+    deleteComment(commentId, {
+      onSuccess: () => {
+        refetch();
+        setDeleteSuccess(true);
+      },
+      onError: () => {
+        setDeleteError(true);
+      },
+    });
+  };
 
   const handleClose = () => {
     reset();
     setSubmitError("");
+    setDeleteSuccess(false);
+    setDeleteError(false);
+    resetDeleteStatus();
   };
 
   const formik = useFormik({
@@ -44,7 +67,7 @@ const CommentsList = () => {
     validationSchema: Yup.object({
       content: Yup.string().required("Comment required").max(128),
     }),
-    onSubmit: async (values, { resetForm }) => {
+    onSubmit: (values, { resetForm }) => {
       if (!postId) return;
 
       postComment(values, {
@@ -78,6 +101,23 @@ const CommentsList = () => {
         </Alert>
       </Snackbar>
 
+      <Snackbar
+        open={deleteSuccess || deleteError}
+        autoHideDuration={2000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        TransitionProps={{ onExited: handleClose }}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={deleteSuccess ? "success" : "error"}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {deleteSuccess ? "Comment deleted" : "Error deleting comment"}
+        </Alert>
+      </Snackbar>
+
       <div className="comments-header">
         <h3>Comments ({commentsData?.length || 0})</h3>
       </div>
@@ -91,12 +131,8 @@ const CommentsList = () => {
           commentsData?.map((comment) => (
             <CommentItem
               key={comment.id}
-              userId={comment.userId}
-              id={comment.id}
-              userImg={comment.userImg}
-              userName={comment.userName}
-              content={comment.content}
-              created_at={comment.created_at}
+              {...comment}
+              onDelete={handleDelete}
             />
           ))
         )}
