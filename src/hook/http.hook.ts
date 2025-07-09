@@ -11,13 +11,18 @@ axios.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+interface ApiResponse<T> {
+  data: T;
+  status: number;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const request = async <T = any>(
   url: string,
   method = "GET",
   body: string | null = null,
   headers = {}
-): Promise<T> => {
+): Promise<ApiResponse<T>> => {
   try {
     const response = await axios({
       url,
@@ -26,7 +31,10 @@ export const request = async <T = any>(
       headers: { "Content-Type": "application/json", ...headers },
     });
 
-    return response.data;
+    return {
+      data: response.data,
+      status: response.status,
+    };
   } catch (e) {
     const error = e as AxiosError;
 

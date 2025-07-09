@@ -37,7 +37,7 @@ export const useSignIn = () =>
     mutationFn: (data: SignInRequest) =>
       request("http://localhost:3000/sign-in", "POST", JSON.stringify(data)),
     onSuccess: (data) => {
-      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("authToken", data.data.token);
     },
   });
 
