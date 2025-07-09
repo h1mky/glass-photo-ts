@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
 
+import { useSelector } from "react-redux";
+import { selectUserMain } from "../../redux/userSlice/selector";
+
 interface CommentItemProps {
   id: number;
   userId: number;
@@ -21,6 +24,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
   created_at,
   onDelete,
 }) => {
+  const actualUser = useSelector(selectUserMain);
+
   const formatTimeAgo = (date: Date) => {
     const formatedDate = new Date(date);
     const now = new Date();
@@ -52,7 +57,11 @@ const CommentItem: React.FC<CommentItemProps> = ({
         </div>
         <div className="comment-text">{content}</div>
       </div>
-      <FaTrash className="comment-delete" onClick={() => onDelete(id)} />
+      {actualUser?.id === userId ? (
+        <FaTrash className="comment-delete" onClick={() => onDelete(id)} />
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };

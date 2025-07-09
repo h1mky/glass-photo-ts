@@ -1,4 +1,3 @@
-// CommentsList.tsx
 import { useState } from "react";
 import CommentItem from "../commentsListItem.tsx";
 import { useParams, Link } from "react-router-dom";
