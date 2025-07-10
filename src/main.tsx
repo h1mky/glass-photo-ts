@@ -9,8 +9,6 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import CreateButton from "./uiComponents/CreateButton";
-
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
@@ -18,7 +16,6 @@ createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <BrowserRouter>
         <StrictMode>
-          <CreateButton />
           <App />
         </StrictMode>
       </BrowserRouter>

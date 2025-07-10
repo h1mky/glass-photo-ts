@@ -1,5 +1,8 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { ClipLoader } from "react-spinners";
+
+import CreateButton from "../../uiComponents/CreateButton";
 
 const MainPage = lazy(() => import("../../pages/MainPage"));
 const PhotoModal = lazy(() => import("../postModal"));
@@ -8,8 +11,6 @@ const SignInForm = lazy(() => import("../../pages/SignInForm"));
 const UserPage = lazy(() => import("../../pages/UserPage"));
 const SettingsPage = lazy(() => import("../../pages/SettingsPage"));
 const Page404 = lazy(() => import("../../pages/page404/index"));
-
-import { ClipLoader } from "react-spinners";
 
 const App = () => {
   const location = useLocation();
@@ -26,10 +27,12 @@ const App = () => {
             alignItems: "center",
           }}
         >
-          <ClipLoader color="#f0f0f0f0" size={40} />
+          <ClipLoader color="#f0f0f0" size={40} />
         </div>
       }
     >
+      <CreateButton />
+
       <Routes location={state?.backgroundLocation || location}>
         <Route path="/" element={<MainPage />} />
         <Route path="/post/:id" element={<PhotoModal />} />

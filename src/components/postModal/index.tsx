@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import ModalContainer from "../../uiComponents/photoModal";
+import ModalContainer from "../../uiComponents/modalContainer";
 import PhotoModalContent from "../../uiComponents/photoModalContent";
 import NotFoundPage from "../../pages/page404";
 import { useFetchPostById } from "../../services/PostService/service";
