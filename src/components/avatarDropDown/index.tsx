@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Avatar,
-  Menu,
-  MenuItem,
-  IconButton,
-  Tooltip,
-  Box,
-  ListItemIcon,
-} from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Box from "@mui/material/Box";
+import ListItemIcon from "@mui/material/ListItemIcon";
 import { Settings, LogOut } from "lucide-react";
 import type { UserMain } from "../../redux/userSlice/type";
 

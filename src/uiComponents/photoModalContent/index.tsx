@@ -2,7 +2,7 @@ import { Calendar, MessageCircle, Share } from "lucide-react";
 import { Link } from "react-router-dom";
 import CommentsList from "../../components/commentsList";
 
-import type { PostByID } from "../../redux/postsSlice/types";
+import type { PostByID } from "../../services/PostService/type";
 
 type Props = {
   post: PostByID;

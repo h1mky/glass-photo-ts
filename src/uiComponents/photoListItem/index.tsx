@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import type { Photo } from "../../redux/postsSlice/types";
+import type { Photo } from "../../services/PostService/type";
 
 const PhotoListItem: React.FC<{ photo: Photo }> = ({ photo }) => {
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ const PhotoListItem: React.FC<{ photo: Photo }> = ({ photo }) => {
           src={photo.post_img}
           alt={photo.title}
           className="photo-item-img"
+          loading="lazy"
         />
 
         <div className="photo-item-overlay">

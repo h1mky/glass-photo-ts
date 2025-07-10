@@ -4,7 +4,8 @@ import { useParams, Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { ClipLoader } from "react-spinners";
-import { Snackbar, Alert } from "@mui/material";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 import {
   useCommentsGet,

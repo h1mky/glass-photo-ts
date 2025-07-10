@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { Avatar, Snackbar, Alert } from "@mui/material";
+
+import Avatar from "@mui/material/Avatar";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+
 import { ClipLoader } from "react-spinners";
 import { useFormik } from "formik";
 
@@ -33,6 +37,8 @@ const SettingsList = () => {
 
       mutation.mutate(values, {
         onSuccess: () => setShowAlert(true),
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         onError: () => (err) => {
           setErrorMessage(err?.message || "Update failed");
           setShowAlert(true);

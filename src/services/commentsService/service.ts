@@ -17,6 +17,7 @@ export interface CommentsItem {
   userName: string;
   content: string;
   created_at: Date;
+  onDelete?: (id: number) => void;
 }
 
 export const useCommentsGet = (postId: string) => {

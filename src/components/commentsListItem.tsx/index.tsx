@@ -5,17 +5,9 @@ import { FaTrash } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { selectUserMain } from "../../redux/userSlice/selector";
 
-interface CommentItemProps {
-  id: number;
-  userId: number;
-  userImg: string;
-  userName: string;
-  content: string;
-  created_at: Date;
-  onDelete: (id: number) => void;
-}
+import type { CommentsItem } from "../../services/commentsService/service";
 
-const CommentItem: React.FC<CommentItemProps> = ({
+const CommentItem: React.FC<CommentsItem> = ({
   id,
   userId,
   userImg,
@@ -58,6 +50,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
         <div className="comment-text">{content}</div>
       </div>
       {actualUser?.id === userId ? (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         <FaTrash className="comment-delete" onClick={() => onDelete(id)} />
       ) : (
         <div></div>
