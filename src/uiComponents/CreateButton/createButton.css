@@ -5,7 +5,7 @@
   z-index: 1000;
 }
 
-.Btn {
+.Btn-create {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -45,19 +45,19 @@
 }
 
 /* hover effect on button width */
-.Btn:hover {
+.Btn-create:hover {
   width: 125px;
   transition-duration: 0.3s;
 }
 
-.Btn:hover .sign {
+.Btn-create:hover .sign {
   width: 30%;
   transition-duration: 0.3s;
   padding-left: 15px;
 }
 
 /* hover effect button's text */
-.Btn:hover .text {
+.Btn-create:hover .text {
   opacity: 1;
   width: 70%;
   transition-duration: 0.3s;
@@ -65,6 +65,6 @@
 }
 
 /* button click effect*/
-.Btn:active {
+.Btn-create:active {
   transform: translate(2px, 2px);
 }

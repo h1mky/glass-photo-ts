@@ -9,7 +9,7 @@ const CreateButton = () => {
   return (
     <>
       <div className="create-button_wrapper">
-        <button className="Btn" onClick={() => setIsModalOpen(true)}>
+        <button className="Btn-create" onClick={() => setIsModalOpen(true)}>
           <div className="sign">+</div>
           <div className="text">Create</div>
         </button>
