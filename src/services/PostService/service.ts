@@ -38,5 +38,6 @@ export const useCreatePost = () => {
   return useMutation({
     mutationFn: (body: CreatePost) =>
       request(`http://localhost:3000/post`, "POST", JSON.stringify(body)),
+    onError: (err) => console.log(err),
   });
 };
