@@ -2,8 +2,6 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { ClipLoader } from "react-spinners";
 
-import CreateButton from "../../uiComponents/CreateButton";
-
 const MainPage = lazy(() => import("../../pages/MainPage"));
 const PhotoModal = lazy(() => import("../postModal"));
 const SignUpForm = lazy(() => import("../../pages/signUpForm"));
@@ -31,8 +29,6 @@ const App = () => {
         </div>
       }
     >
-      <CreateButton />
-
       <Routes location={state?.backgroundLocation || location}>
         <Route path="/" element={<MainPage />} />
         <Route path="/post/:id" element={<PhotoModal />} />

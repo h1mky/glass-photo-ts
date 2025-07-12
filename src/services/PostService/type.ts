@@ -20,3 +20,8 @@ export interface PostByID {
   title: string;
   created_at: Date;
 }
+export interface CreatePost {
+  title: string;
+  post_img: string;
+  description: string;
+}

@@ -28,7 +28,7 @@ const PhotoListItem: React.FC<Props> = ({ photo, disableClick = false }) => {
         />
 
         <div className="photo-item-overlay">
-          <div className="photo-item-info">
+          <div className="photo-item-info pb-2">
             <div className="photo-username">{photo.username}</div>
             <div className="photo-description">{photo.title}</div>
           </div>

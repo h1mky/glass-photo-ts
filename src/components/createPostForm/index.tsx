@@ -1,16 +1,41 @@
 import { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
+import AlertSnackbar from "../../uiComponents/Alret";
+
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 
+import { ClipLoader } from "react-spinners";
+
 import "./createPostForm.css";
 import PhotoListItem from "../../uiComponents/photoListItem";
 import type { Photo } from "../../services/PostService/type";
+import { useCreatePost } from "../../services/PostService/service";
 
 const CreatePostForm = () => {
   const [value, setValue] = useState("1");
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarStatus, setSnackbarStatus] = useState<
+    "success" | "error" | null
+  >(null);
+
+  const handleClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const {
+    mutateAsync: createPost,
+    isPending,
+    isSuccess,
+    isError,
+    error,
+  } = useCreatePost();
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -21,11 +46,57 @@ const CreatePostForm = () => {
     post_img:
       "https://images.steamusercontent.com/ugc/2017101576991256152/5F9F917E7DCBB661C0ACCA032E47CC417945F778/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
     username: "zvezd",
+
     title: "TILT",
   };
 
+  const validationSchema = Yup.object({
+    title: Yup.string()
+      .transform((value) => value.trim())
+      .min(3, "Min 3 characters")
+      .required("Required"),
+    description: Yup.string()
+      .transform((value) => value.trim())
+      .min(2, "Min 2 characters")
+      .max(128, "Max 128 characters"),
+    post_img: Yup.string().url().required("Required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      description: "",
+      post_img: "",
+    },
+    validationSchema,
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        await createPost(values);
+        resetForm();
+        setSnackbarOpen(true);
+        setSnackbarStatus("success");
+      } catch {
+        setSnackbarOpen(true);
+        setSnackbarStatus("error");
+      }
+    },
+  });
+
   return (
     <Box sx={{ width: "100%", typography: "body1", minHeight: "700px" }}>
+      <AlertSnackbar
+        open={snackbarOpen && (isSuccess || isError)}
+        onClose={handleClose}
+        status={snackbarStatus}
+        message={
+          isSuccess
+            ? "Post Created Success"
+            : error instanceof Error
+            ? error.message || "Post create error"
+            : "Post create error"
+        }
+      />
+
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList
@@ -63,10 +134,10 @@ const CreatePostForm = () => {
               <input
                 type="text"
                 id="title"
-                name="title"
                 className="form-input"
                 placeholder="Введите заголовок"
                 style={{ color: "white" }}
+                {...formik.getFieldProps("title")}
               />
             </div>
 
@@ -74,11 +145,11 @@ const CreatePostForm = () => {
               <label htmlFor="description">Описание поста</label>
               <textarea
                 id="description"
-                name="description"
                 className="form-textarea"
                 rows={4}
                 placeholder="Введите описание"
                 style={{ color: "white" }}
+                {...formik.getFieldProps("description")}
               />
             </div>
           </form>
@@ -107,8 +178,12 @@ const CreatePostForm = () => {
           <div className="preview-wrapper">
             <PhotoListItem photo={photo} disableClick />
             <div className="form-actions">
-              <button type="button" className="btn btn-outline-light">
-                Submit
+              <button
+                type="button"
+                className="btn btn-outline-light"
+                disabled={isPending}
+              >
+                {isPending ? <ClipLoader size={20} color="#fff" /> : "Submit"}
               </button>
             </div>
           </div>

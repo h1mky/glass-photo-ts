@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { request } from "../../hook/http.hook";
-import type { Photo, PostByID } from "./type";
+import type { CreatePost, Photo, PostByID } from "./type";
 
 export const useFetchAllPosts = () => {
   return useQuery<Photo[]>({
@@ -31,5 +31,12 @@ export const useFetchUserPosts = (id: number) => {
       return res.data;
     },
     enabled: !!id,
+  });
+};
+
+export const useCreatePost = () => {
+  return useMutation({
+    mutationFn: (body: CreatePost) =>
+      request(`http://localhost:3000/post`, "POST", JSON.stringify(body)),
   });
 };
