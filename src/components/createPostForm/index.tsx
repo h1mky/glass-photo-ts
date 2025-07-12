@@ -19,7 +19,7 @@ const CreatePostForm = () => {
   const photo: Photo = {
     id: 5,
     post_img:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTM1DP_lCea_2goEBYT67d9zCqjffaaYQJGg&s",
+      "https://images.steamusercontent.com/ugc/2017101576991256152/5F9F917E7DCBB661C0ACCA032E47CC417945F778/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true",
     username: "zvezd",
     title: "TILT",
   };
