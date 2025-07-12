@@ -1,12 +1,20 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import type { Photo } from "../../services/PostService/type";
 
-const PhotoListItem: React.FC<{ photo: Photo }> = ({ photo }) => {
+type Props = {
+  photo: Photo;
+  disableClick?: boolean;
+};
+
+const PhotoListItem: React.FC<Props> = ({ photo, disableClick = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const handlePhotoClick = () => {
-    navigate(`/post/${photo.id}`, { state: { backgroundLocation: location } });
+    if (disableClick) return;
+    navigate(`/post/${photo.id}`, {
+      state: { backgroundLocation: location },
+    });
   };
 
   return (

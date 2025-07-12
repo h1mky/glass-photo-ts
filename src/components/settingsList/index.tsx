@@ -55,6 +55,8 @@ const SettingsList = () => {
     if (uploadedUrl) {
       formik.setFieldValue("user_img", uploadedUrl);
     }
+
+    e.target.value = "";
   };
 
   const handleClose = () => {
