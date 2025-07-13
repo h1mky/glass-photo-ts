@@ -1,36 +1,35 @@
-import { useState } from "react";
+import { useState, type ChangeEvent, type SyntheticEvent } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useSelector } from "react-redux";
 
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
-import AlertSnackbar from "../../uiComponents/Alret";
-
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 
 import { ClipLoader } from "react-spinners";
 
-import "./createPostForm.css";
+import AlertSnackbar from "../../uiComponents/Alret";
 import PhotoListItem from "../../uiComponents/photoListItem";
-import type { Photo } from "../../services/PostService/type";
-import { useCreatePost } from "../../services/PostService/service";
 
-import { useSelector } from "react-redux";
 import { selectUserMain } from "../../redux/userSlice/selector";
-
+import { useCreatePost } from "../../services/PostService/service";
 import { uploadPhoto } from "../../services/supabase/service";
 
+import type { Photo } from "../../services/PostService/type";
+
+import "./createPostForm.css";
+
 const CreatePostForm = () => {
-  const [value, setValue] = useState("1");
-
-  const user = useSelector(selectUserMain);
-
+  const [tabValue, setTabValue] = useState("1");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarStatus, setSnackbarStatus] = useState<
     "success" | "error" | null
   >(null);
+
+  const user = useSelector(selectUserMain);
 
   const {
     mutateAsync: createPost,
@@ -40,33 +39,13 @@ const CreatePostForm = () => {
     error,
   } = useCreatePost();
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const uploadedUrl = await uploadPhoto(file);
-    if (uploadedUrl) {
-      formik.setFieldValue("post_img", uploadedUrl);
-    }
-
-    e.target.value = "";
-  };
-
-  const handleClose = () => {
-    setSnackbarOpen(false);
-  };
-
-  const handleChange = (_: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-  };
-
   const validationSchema = Yup.object({
     title: Yup.string()
-      .transform((value) => value.trim())
+      .transform((v) => v.trim())
       .min(3, "Min 3 characters")
       .required("Required"),
     description: Yup.string()
-      .transform((value) => value.trim())
+      .transform((v) => v.trim())
       .min(2, "Min 2 characters")
       .max(128, "Max 128 characters"),
     post_img: Yup.string().url().required("Required"),
@@ -81,7 +60,10 @@ const CreatePostForm = () => {
     validationSchema,
     onSubmit: async (values, { resetForm }) => {
       try {
-        await createPost(values);
+        await createPost(values, {
+          onSuccess: succesSubmit,
+          onError: () => setTabValue("1"),
+        });
         resetForm();
         setSnackbarOpen(true);
         setSnackbarStatus("success");
@@ -92,10 +74,37 @@ const CreatePostForm = () => {
     },
   });
 
+  const handleTabChange = (_: SyntheticEvent, newValue: string) => {
+    setTabValue(newValue);
+  };
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const uploadedUrl = await uploadPhoto(file);
+    if (uploadedUrl) {
+      formik.setFieldValue("post_img", uploadedUrl);
+    }
+
+    e.target.value = "";
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
+  const succesSubmit = () => {
+    setTabValue("1");
+    setTimeout(() => {
+      window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    }, 2000);
+  };
+
   const photoPreview: Photo = {
     id: 0,
     title: formik.values.title || "Preview Title",
-    username: user?.username ? user.username : "no username",
+    username: user?.username || "no username",
     post_img: formik.values.post_img || "https://via.placeholder.com/300",
   };
 
@@ -103,7 +112,9 @@ const CreatePostForm = () => {
     <Box sx={{ width: "100%", typography: "body1", minHeight: "700px" }}>
       <AlertSnackbar
         open={snackbarOpen && (isSuccess || isError)}
-        onClose={handleClose}
+        onClose={handleCloseSnackbar}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         status={snackbarStatus}
         message={
           isSuccess
@@ -114,10 +125,10 @@ const CreatePostForm = () => {
         }
       />
 
-      <TabContext value={value}>
+      <TabContext value={tabValue}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList
-            onChange={handleChange}
+            onChange={handleTabChange}
             aria-label="form tabs"
             TabIndicatorProps={{ style: { backgroundColor: "white" } }}
             sx={{
@@ -149,10 +160,10 @@ const CreatePostForm = () => {
           <TabPanel value="1">
             <div className="form-group">
               <input
-                type="text"
                 id="title"
-                className="form-input"
+                type="text"
                 placeholder="Enter title"
+                className="form-input"
                 style={{ color: "white" }}
                 {...formik.getFieldProps("title")}
               />
@@ -166,9 +177,9 @@ const CreatePostForm = () => {
             <div className="form-group">
               <textarea
                 id="description"
-                className="form-textarea"
                 rows={4}
                 placeholder="Enter description"
+                className="form-textarea"
                 style={{ color: "white" }}
                 {...formik.getFieldProps("description")}
               />
@@ -206,7 +217,6 @@ const CreatePostForm = () => {
                   type="submit"
                   className="btn btn-outline-light"
                   disabled={isPending}
-                  onClick={() => formik.handleSubmit}
                 >
                   {isPending ? <ClipLoader size={20} color="#fff" /> : "Submit"}
                 </button>
