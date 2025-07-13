@@ -1,69 +1,65 @@
-# React + TypeScript + Vite
+## Glass Photo — React Photo Sharing App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Glass Photo is a modern, responsive photo-sharing web application built with React and TypeScript. It supports user registration, login, profile management, image uploads, and public post viewing with commenting functionality.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 🔐 User authentication (Sign up / Sign in / Logout)
+- 👤 Public and private user profiles
+- 🖼️ Upload and preview photo posts
+- 💬 Commenting on photos
+- 🧾 Edit profile bio and avatar
+- 🌐 Responsive design (React + MUI)
+- 🔄 Real-time UI updates with React Query
+- 📁 Drag-and-drop or manual file upload
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🧰 Technologies Used
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **React** with **TypeScript**
+- **React Router v6** for routing
+- **Redux Toolkit** for user state
+- **React Query (TanStack Query)** for async data management
+- **Formik + Yup** for form state and validation
+- **Axios** with interceptor for authenticated API requests
+- **Supabase** for file (image) uploads
+- **Material UI** for notifications and avatar components
+- **react-spinners** for loading indicators
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/h1mky/glass-photo-ts.git
+cd glass-photo-ts
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛡️ Authentication
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **JWT token** is stored in localStorage
+- **Axios** interceptor automatically adds Authorization: Bearer token to each request
+- Authenticated users can:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+  - Edit their profile
+
+- Upload photos
+
+-Leave comments
+
+---
+
+## 🛠️ Future Improvements
+
+- Image optimization & thumbnail generatio
+- Like and save posts functionality
+- Infinite scroll or pagination for posts
+- Unit tests with React Testing Library
+- User search and discovery features
+
+---
