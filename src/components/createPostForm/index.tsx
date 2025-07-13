@@ -121,25 +121,33 @@ const CreatePostForm = () => {
             aria-label="form tabs"
             TabIndicatorProps={{ style: { backgroundColor: "white" } }}
             sx={{
+              fontFamily:
+                'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
               "& .MuiTab-root": {
                 flex: 1,
                 textAlign: "center",
                 color: "white",
+                fontFamily: "inherit",
                 "&.Mui-selected": { color: "gray" },
                 "&:hover": { color: "gray" },
+                "&.Mui-disabled": {
+                  opacity: 0.5,
+                  color: "#bbb",
+                  cursor: "not-allowed",
+                  textDecoration: "line-through",
+                },
               },
             }}
           >
             <Tab label="Post Details" value="1" />
             <Tab label="Photo" value="2" />
-            <Tab label="Preview" value="3" />
+            <Tab label="Preview" value="3" disabled={!formik.values.post_img} />
           </TabList>
         </Box>
 
         <form onSubmit={formik.handleSubmit} className="post-form">
           <TabPanel value="1">
             <div className="form-group">
-              <label htmlFor="title">Заголовок поста</label>
               <input
                 type="text"
                 id="title"
@@ -148,10 +156,14 @@ const CreatePostForm = () => {
                 style={{ color: "white" }}
                 {...formik.getFieldProps("title")}
               />
+              {formik.touched.title && formik.errors.title && (
+                <div className="error-text container">
+                  {formik.errors.title}
+                </div>
+              )}
             </div>
 
             <div className="form-group">
-              <label htmlFor="description">Описание поста</label>
               <textarea
                 id="description"
                 className="form-textarea"
