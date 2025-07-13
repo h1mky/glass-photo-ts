@@ -152,7 +152,7 @@ const CreatePostForm = () => {
                 type="text"
                 id="title"
                 className="form-input"
-                placeholder="Введите заголовок"
+                placeholder="Enter title"
                 style={{ color: "white" }}
                 {...formik.getFieldProps("title")}
               />
@@ -168,7 +168,7 @@ const CreatePostForm = () => {
                 id="description"
                 className="form-textarea"
                 rows={4}
-                placeholder="Введите описание"
+                placeholder="Enter description"
                 style={{ color: "white" }}
                 {...formik.getFieldProps("description")}
               />
