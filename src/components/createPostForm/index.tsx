@@ -20,6 +20,8 @@ import { uploadPhoto } from "../../services/supabase/service";
 
 import type { Photo } from "../../services/PostService/type";
 
+import { allowedTypes } from "../../services/supabase/AllowedTypes";
+
 import "./createPostForm.css";
 
 const CreatePostForm = () => {
@@ -28,6 +30,7 @@ const CreatePostForm = () => {
   const [snackbarStatus, setSnackbarStatus] = useState<
     "success" | "error" | null
   >(null);
+  const [fileTypeError, setFileTypeError] = useState(false);
 
   const user = useSelector(selectUserMain);
 
@@ -82,6 +85,12 @@ const CreatePostForm = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (!allowedTypes.includes(file.type)) {
+      setFileTypeError(true);
+      e.target.value = "";
+      return;
+    }
+
     const uploadedUrl = await uploadPhoto(file);
     if (uploadedUrl) {
       formik.setFieldValue("post_img", uploadedUrl);
@@ -123,6 +132,13 @@ const CreatePostForm = () => {
             ? error.message || "Post create error"
             : "Post create error"
         }
+      />
+
+      <AlertSnackbar
+        open={fileTypeError}
+        onClose={() => setFileTypeError(false)}
+        status="error"
+        message="Unsupported file format"
       />
 
       <TabContext value={tabValue}>

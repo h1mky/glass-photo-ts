@@ -5,6 +5,7 @@ import CreateButton from "../uiComponents/CreateButton";
 const SettingsPage = () => {
   return (
     <>
+      <title>Settings</title>
       <CreateButton />
       <Nav />
       <SettingsList />

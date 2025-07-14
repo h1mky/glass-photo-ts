@@ -65,6 +65,7 @@ const SignInForm = () => {
 
   return (
     <div className="sign-up-container">
+      <title>Sign-in</title>
       <Snackbar
         open={snackbarOpen && (isSuccess || isError)}
         autoHideDuration={2000}
