@@ -45,12 +45,9 @@ npm run dev
 - **JWT token** is stored in localStorage
 - **Axios** interceptor automatically adds Authorization: Bearer token to each request
 - Authenticated users can:
-
   - Edit their profile
-
-- Upload photos
-
--Leave comments
+  - Upload photos
+  - Leave comments
 
 ---
 
