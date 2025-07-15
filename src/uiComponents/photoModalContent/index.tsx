@@ -1,14 +1,42 @@
-import { Calendar, MessageCircle, Share } from "lucide-react";
+import { Calendar, Share } from "lucide-react";
 import { Link } from "react-router-dom";
 import CommentsList from "../../components/commentsList";
 
 import type { PostByID } from "../../services/PostService/type";
+
+import AlertSnackbar from "../Alret";
+
+import { useState } from "react";
 
 type Props = {
   post: PostByID;
 };
 
 const PhotoModalContent = ({ post }: Props) => {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarStatus, setSnackbarStatus] = useState<
+    "success" | "error" | null
+  >(null);
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+    setSnackbarStatus(null);
+  };
+
+  const handleCopy = () => {
+    const url = `${window.location.origin}${location.pathname}`;
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        setSnackbarStatus("success");
+        setSnackbarOpen(true);
+      })
+      .catch(() => {
+        setSnackbarStatus("error");
+        setSnackbarOpen(true);
+      });
+  };
+
   const formatDate = (dateString: string) =>
     new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -20,10 +48,22 @@ const PhotoModalContent = ({ post }: Props) => {
 
   const postDescValid = post?.description.Valid
     ? post?.description.String
-    : "user has no bio";
+    : "post has no description";
 
   return (
     <div className="modal-body">
+      <AlertSnackbar
+        open={snackbarOpen}
+        onClose={handleCloseSnackbar}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        status={snackbarStatus}
+        message={
+          snackbarStatus === "success"
+            ? "Link copied to clipboard"
+            : "Failed to copy link"
+        }
+      />
       <div className="modal-left">
         <div className="photo-container">
           <img src={post?.post_img} alt={post?.title} className="main-photo" />
@@ -71,11 +111,7 @@ const PhotoModalContent = ({ post }: Props) => {
           </div>
 
           <div className="photo-actions">
-            <button className="action-btn">
-              <MessageCircle size={20} />
-              <span>Comment</span>
-            </button>
-            <button className="action-btn">
+            <button className="action-btn" onClick={handleCopy}>
               <Share size={20} />
               <span>Share</span>
             </button>

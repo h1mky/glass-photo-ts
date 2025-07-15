@@ -22,7 +22,7 @@ const AlertSnackbar = ({
   >
     <Alert
       onClose={onClose}
-      severity={status}
+      severity={status || "info"}
       variant="filled"
       sx={{ width: "100%" }}
     >

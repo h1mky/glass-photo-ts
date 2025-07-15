@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import CommentItem from "../commentsListItem.tsx";
 import { useParams, Link } from "react-router-dom";
 import { useFormik } from "formik";
@@ -42,17 +42,20 @@ const CommentsList = () => {
     reset,
   } = useCommentsPost(postId);
 
-  const handleDelete = (commentId: number) => {
-    deleteComment(commentId, {
-      onSuccess: () => {
-        refetch();
-        setDeleteSuccess(true);
-      },
-      onError: () => {
-        setDeleteError(true);
-      },
-    });
-  };
+  const handleDelete = useCallback(
+    (commentId: number) => {
+      deleteComment(commentId, {
+        onSuccess: () => {
+          refetch();
+          setDeleteSuccess(true);
+        },
+        onError: () => {
+          setDeleteError(true);
+        },
+      });
+    },
+    [deleteComment, refetch]
+  );
 
   const handleClose = () => {
     reset();
