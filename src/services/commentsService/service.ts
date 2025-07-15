@@ -31,6 +31,7 @@ export const useCommentsGet = (postId: string) => {
       return res.data;
     },
     enabled: !!postId,
+    retry: false,
   });
 };
 
@@ -42,6 +43,7 @@ export const useCommentsPost = (postId: string) => {
         "POST",
         JSON.stringify(body)
       ),
+    retry: false,
   });
 };
 
@@ -50,5 +52,6 @@ export const useDeleteComment = () => {
     mutationFn: (commentId: number) =>
       request(`http://localhost:3000/comments/${commentId}`, "DELETE"),
     onError: (error) => console.log(error),
+    retry: false,
   });
 };

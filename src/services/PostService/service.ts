@@ -20,6 +20,7 @@ export const useFetchPostById = (id: number) => {
       return res.data;
     },
     enabled: !!id,
+    retry: false,
   });
 };
 
@@ -31,6 +32,7 @@ export const useFetchUserPosts = (id: number) => {
       return res.data;
     },
     enabled: !!id,
+    retry: false,
   });
 };
 

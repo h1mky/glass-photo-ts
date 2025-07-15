@@ -23,6 +23,7 @@ export const useUserProfile = (id: number) => {
     queryKey: ["user-profile", id],
     queryFn: () => request(`http://localhost:3000/user/${id}`, "GET"),
     enabled: !!id,
+    retry: false,
   });
 };
 
@@ -30,6 +31,7 @@ export const useSignUp = () =>
   useMutation({
     mutationFn: (data: SignUpRequest) =>
       request("http://localhost:3000/sign-up", "POST", JSON.stringify(data)),
+    retry: false,
   });
 
 export const useSignIn = () =>
@@ -39,10 +41,12 @@ export const useSignIn = () =>
     onSuccess: (data) => {
       localStorage.setItem("authToken", data.data.token);
     },
+    retry: false,
   });
 
 export const usePatchUser = () =>
   useMutation({
     mutationFn: (data: EditedData) =>
       request("http://localhost:3000/user", "PATCH", JSON.stringify(data)),
+    retry: false,
   });
