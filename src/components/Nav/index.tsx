@@ -22,7 +22,9 @@ const Nav = () => {
   const loading = useSelector(selectUserMainLoading);
 
   useEffect(() => {
-    dispatch(fetchMainPageUserThunk());
+    if (!user) {
+      dispatch(fetchMainPageUserThunk());
+    }
   }, []);
 
   return (
