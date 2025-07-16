@@ -12,6 +12,7 @@ import { useFormik } from "formik";
 import { selectUserMain } from "../../redux/userSlice/selector";
 import { uploadPhoto } from "../../services/supabase/service";
 import { usePatchUser } from "../../services/UserService/service";
+import { allowedTypes } from "../../services/supabase/AllowedTypes";
 
 import "./settingsList.css";
 
@@ -50,6 +51,11 @@ const SettingsList = () => {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (!allowedTypes.includes(file.type)) {
+      e.target.value = "";
+      return;
+    }
 
     const uploadedUrl = await uploadPhoto(file);
     if (uploadedUrl) {

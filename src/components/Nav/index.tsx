@@ -25,7 +25,7 @@ const Nav = () => {
     if (!user) {
       dispatch(fetchMainPageUserThunk());
     }
-  }, []);
+  }, [user, dispatch]);
 
   return (
     <div className="wrapper-nav">
