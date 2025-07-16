@@ -32,7 +32,6 @@ const CommentItem: React.FC<CommentsItem> = ({
       return `${Math.floor(diffInSeconds / 3600)} hours ago`;
     if (diffInSeconds < 2592000)
       return `${Math.floor(diffInSeconds / 86400)} days ago`;
-    return date.toLocaleDateString();
   };
 
   return (
