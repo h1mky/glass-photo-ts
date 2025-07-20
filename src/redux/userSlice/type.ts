@@ -1,7 +1,12 @@
+interface descriptionOrNull {
+  string: string;
+  valid: boolean;
+}
+
 export interface UserMain {
   id: number;
   username: string;
-  description: string;
+  description: descriptionOrNull;
   user_img: string;
 }
 

@@ -11,4 +11,6 @@ export const store = configureStore({
 export type RootState = {
   user: UserState;
 };
+
+
 export type AppDispatch = typeof store.dispatch;

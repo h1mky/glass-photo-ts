@@ -25,13 +25,13 @@ const SettingsList = () => {
 
   const formik = useFormik({
     initialValues: {
-      description: userData?.description || "",
+      description: userData?.description.string || "",
       user_img: userData?.user_img || "",
     },
     enableReinitialize: true,
     onSubmit: async (values) => {
       const hasChanges =
-        values.description !== userData?.description ||
+        values.description !== userData?.description.string ||
         values.user_img !== userData?.user_img;
 
       if (!hasChanges) return;
